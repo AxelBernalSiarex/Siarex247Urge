@@ -38,7 +38,52 @@ public class BovedaNominaForm {
 	private String importeExcento;
 	private double importeExcentoDouble;
 	
+	private String totalOtros;
+	private double totalOtrosDouble;
+
+	private String totalExcento;
+	private double totalExcentoDouble;
+
+	private String totalGravado;
+	private double totalGravadoDouble;
 	
+	
+	public String getTotalOtros() {
+		return totalOtros;
+	}
+	public void setTotalOtros(String totalOtros) {
+		this.totalOtros = totalOtros;
+	}
+	public double getTotalOtrosDouble() {
+		return totalOtrosDouble;
+	}
+	public void setTotalOtrosDouble(double totalOtrosDouble) {
+		this.totalOtrosDouble = totalOtrosDouble;
+	}
+	public String getTotalExcento() {
+		return totalExcento;
+	}
+	public void setTotalExcento(String totalExcento) {
+		this.totalExcento = totalExcento;
+	}
+	public double getTotalExcentoDouble() {
+		return totalExcentoDouble;
+	}
+	public void setTotalExcentoDouble(double totalExcentoDouble) {
+		this.totalExcentoDouble = totalExcentoDouble;
+	}
+	public String getTotalGravado() {
+		return totalGravado;
+	}
+	public void setTotalGravado(String totalGravado) {
+		this.totalGravado = totalGravado;
+	}
+	public double getTotalGravadoDouble() {
+		return totalGravadoDouble;
+	}
+	public void setTotalGravadoDouble(double totalGravadoDouble) {
+		this.totalGravadoDouble = totalGravadoDouble;
+	}
 	public int getIdRegistro() {
 		return idRegistro;
 	}

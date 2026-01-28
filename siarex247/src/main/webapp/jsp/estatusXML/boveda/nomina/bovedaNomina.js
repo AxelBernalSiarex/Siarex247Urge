@@ -1,208 +1,264 @@
+var tablaDetalleNomina = null;
 
+$(document).ready(function() {
+    try {
+        tablaDetalleNomina = $('#tablaDetalleNomina').DataTable({
+            paging: true,
+            retrieve: true,
+            pageLength: 15,
+            lengthChange: false,
+            // dom: 'Blfrtip',
+            dom: '<"top">t<"bottom"ilp<"clear">>',
+            ordering: true,
+            serverSide: true,
+            fixedHeader: true,
+            orderCellsTop: true,
+            info: true,
+            select: true,
+            stateSave: false,
+            order: [
+                [0, 'asc']
+            ],
+            buttons: null,
 
- var tablaDetalleNomina = null;
+            language: {
+                processing: "Procesando...",
+                zeroRecords: "No se encontraron resultados",
+                emptyTable: "Ningún dato disponible en esta tabla",
+                info: "Mostrando _START_ al _END_ de _TOTAL_ registros",
+                infoEmpty: "No hay registros disponibles",
+                infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                infoPostFix: "",
+                search: "Buscar:",
+                url: "",
+                infoThousands: ",",
+                loadingRecords: "Cargando...",
+                oPaginate: {
+                    sFirst: "Primero",
+                    sLast: "Último",
+                    sNext: "<span class='fa fa-chevron-right fa-w-10'></span>",
+                    sPrevious: "<span class='fa fa-chevron-left fa-w-10'></span>"
+                }
+            },
+            ajax: {
+                url: '/siarex247/cumplimientoFiscal/boveda/nomina/detalleBoveda.action',
+                beforeSend: function(xhr) {
+                    $('#overSeccion_Boveda_Nomina').css({
+                        display: 'block'
+                    });
+                    $('#btnRefrescar_NominaCFDI').prop('disabled', true);
+                },
+                complete: function(jqXHR, textStatus) {
+                    $('#overSeccion_Boveda_Nomina').css({
+                        display: 'none'
+                    });
+                    $('#btnRefrescar_NominaCFDI').prop('disabled', false);
+                },
 
+                data: function(d) {
+                    // básicos
+                    d.fechaInicial = obtenerFechaIni_Nomina();
+                    d.fechaFinal = obtenerFechaFin_Nomina();
+                    d.rfc = obtenerRFC_Nomina();
+                    d.razonSocial = obtenerRazon_Nomina();
+                    d.uuid = obtenerUUID_Nomina();
+                    d.serie = obtenerSerie_Nomina();
 
-	$(document).ready(function() {
-		try {
-			tablaDetalleNomina = $('#tablaDetalleNomina').DataTable( {
-				paging      : true,
-				retrieve: true,
-				pageLength  : 15,
-				lengthChange: false,
-//				dom: 'Blfrtip',
-//				dom: "<'row mx-0'<'col-md-12'QB><'col-md-6'l><'col-md-6'f>>" + "<'table-responsive scrollbar'tr>" + "<'row g-0 align-items-center justify-content-center justify-content-sm-between'<'col-auto mb-2 mb-sm-0 px-0'i><'col-auto px-0'p>>",
-				//dom: "<'row mx-0'<'col-md-12'B><'col-md-6'l><'col-md-6'f>>" + "<'table-responsive scrollbar'tr>" + "<'row g-0 align-items-center justify-content-center justify-content-sm-between'<'col-auto mb-2 mb-sm-0 px-0'i><'col-auto px-0'p>>",
-				dom		: '<"top">t<"bottom"ilp<"clear">>',
-				ordering    : true,
-				serverSide	: true,
-				fixedHeader : true,
-				orderCellsTop: true,
-				info		: true,
-				select      : true,
-				stateSave	: false, 
-				order       : [ [ 0, 'asc' ] ],	
-				buttons: null,
-				
-				language : {
-					processing:     "Procesando...",
-					zeroRecords:    "No se encontraron resultados",
-					emptyTable:     "Ningún dato disponible en esta tabla",
-					info:           "Mostrando _START_ al _END_ de _TOTAL_ registros",
-					infoEmpty:      "No hay registros disponibles",
-					infoFiltered:   "(filtrado de un total de _MAX_ registros)",
-					infoPostFix:    "",
-					search:         "Buscar:",
-					url:            "",
-					infoThousands:  ",",
-					loadingRecords: "Cargando...",
-					oPaginate: {
-				           sFirst : "Primero",
-				           sLast  : "Último",
-				           sNext  : "<span class='fa fa-chevron-right fa-w-10'></span>",
-				           sPrevious : "<span class='fa fa-chevron-left fa-w-10'></span>"
-				   	}
-				},
-				ajax : {
-					url: '/siarex247/cumplimientoFiscal/boveda/nomina/detalleBoveda.action',
-					beforeSend: function( xhr ) {
-						$('#overSeccion_Boveda_Nomina').css({display:'block'});
-						$('#btnRefrescar_NominaCFDI').prop('disabled', true);
-					},
-					complete: function(jqXHR, textStatus){
-						 $('#overSeccion_Boveda_Nomina').css({display:'none'});
-						 $('#btnRefrescar_NominaCFDI').prop('disabled', false);
-					},	
-					
-					 data: function (d) {
-					    // básicos
-					    d.fechaInicial = obtenerFechaIni_Nomina();
-					    d.fechaFinal   = obtenerFechaFin_Nomina();
-					    d.rfc          = obtenerRFC_Nomina();
-					    d.razonSocial  = obtenerRazon_Nomina();
-					    d.uuid         = obtenerUUID_Nomina();
-					    d.serie        = obtenerSerie_Nomina();
+                    // ===== Operadores texto =====
+                    d.rfcOperator = $('#rfcOperatorN').val() || 'contains';
+                    d.razonOperator = $('#razonOperatorN').val() || 'contains';
+                    d.serieOperator = $('#serieOperatorN').val() || 'contains';
+                    d.uuidOperator = $('#uuidOperatorN').val() || 'contains';
 
-					    // ===== Operadores texto =====
-					    d.rfcOperator    = $('#rfcOperatorN').val()    || 'contains';
-					    d.razonOperator  = $('#razonOperatorN').val()  || 'contains';
-					    d.serieOperator  = $('#serieOperatorN').val()  || 'contains';
-					    d.uuidOperator   = $('#uuidOperatorN').val()   || 'contains';
+                    // ===== Numéricos (valor 1/2 + operador) =====
+                    d.folioV1 = $('#folioFilter1N').val();
+                    d.folioV2 = $('#folioFilter2N').val();
+                    d.folioOperator = $('#folioOperatorN').val() || 'eq';
 
-					    // ===== Numéricos (valor 1/2 + operador) =====
-					    d.folioV1        = $('#folioFilter1N').val();
-					    d.folioV2        = $('#folioFilter2N').val();
-					    d.folioOperator  = $('#folioOperatorN').val()  || 'eq';
+                    d.totalV1 = $('#totalFilter1N').val();
+                    d.totalV2 = $('#totalFilter2N').val();
+                    d.totalOperator = $('#totalOperatorN').val() || 'eq';
 
-					    d.totalV1        = $('#totalFilter1N').val();
-					    d.totalV2        = $('#totalFilter2N').val();
-					    d.totalOperator  = $('#totalOperatorN').val()  || 'eq';
+                    d.subV1 = $('#subFilter1N').val();
+                    d.subV2 = $('#subFilter2N').val();
+                    d.subOperator = $('#subOperatorN').val() || 'eq';
 
-					    d.subV1          = $('#subFilter1N').val();
-					    d.subV2          = $('#subFilter2N').val();
-					    d.subOperator    = $('#subOperatorN').val()    || 'eq';
+                    d.descV1 = $('#descFilter1N').val();
+                    d.descV2 = $('#descFilter2N').val();
+                    d.descOperator = $('#descOperatorN').val() || 'eq';
 
-					    d.descV1         = $('#descFilter1N').val();
-					    d.descV2         = $('#descFilter2N').val();
-					    d.descOperator   = $('#descOperatorN').val()   || 'eq';
+                    d.percV1 = $('#percFilter1N').val();
+                    d.percV2 = $('#percFilter2N').val();
+                    d.percOperator = $('#percOperatorN').val() || 'eq';
 
-					    d.percV1         = $('#percFilter1N').val();
-					    d.percV2         = $('#percFilter2N').val();
-					    d.percOperator   = $('#percOperatorN').val()   || 'eq';
+                    d.dedV1 = $('#dedFilter1N').val();
+                    d.dedV2 = $('#dedFilter2N').val();
+                    d.dedOperator = $('#dedOperatorN').val() || 'eq';
 
-					    d.dedV1          = $('#dedFilter1N').val();
-					    d.dedV2          = $('#dedFilter2N').val();
-					    d.dedOperator    = $('#dedOperatorN').val()    || 'eq';
+                    // ===== Fecha =====
+                    d.dateOperator = $('#dateOperatorN').val() || 'eq';
+                    d.dateV1 = $('#dateFilter1N').val();
+                    d.dateV2 = $('#dateFilter2N').val();
 
-					    // ===== Fecha =====
-					    d.dateOperator   = $('#dateOperatorN').val()   || 'eq';
-					    d.dateV1         = $('#dateFilter1N').val();
-					    d.dateV2         = $('#dateFilter2N').val();
+                    // evita cache si es necesario
+                    d._ = Date.now();
+                },
 
-					    // evita cache si es necesario
-					    d._ = Date.now();
-					  },
-					
-					type: 'POST'
-				},
-				aoColumns : [
-					{ mData: null, "sClass": "alinearCentro"},              // 0 Acciones
-					{ mData: "rfcReceptor", "sClass": "alinearCentro"},      // 1 RFC Receptor
-					{ mData: "razonSocialReceptor"},                         // 2 Razón Social Receptor
-					{ mData: "total", "sClass": "alinearDerecha"},           // 3 Total
-					{ mData: "subTotal", "sClass": "alinearDerecha"},        // 4 Sub-Total
-					{ mData: "descuento", "sClass": "alinearDerecha"},       // 5 Descuento
-					{ mData: "totalPercepciones", "sClass": "alinearDerecha"},// 6 Total Percepciones
-					{ mData: "totalDeducciones", "sClass": "alinearDerecha"}, // 7 Total Deducciones
-					{ mData: null, "sClass": "alinearCentro"},               // 8 XML
-					{ mData: null, "sClass": "alinearCentro"},               // 9 PDF
-					{ mData: "uuid"},                                        // 10 UUID
-					{ mData: "fechaFactura"},                                // 11 Fecha Factura
-				],
-				columnDefs: [
-					 {
-	                    targets: 8,
-	                    render: function (data, type, row) {
-	                    	rowElement = '<img class="" src="/theme-falcon/repse247/img/xml26.png" alt="" style="cursor: pointer;" title="Ver XML" data-bs-toggle="tooltip" data-bs-placement="top" title="Archivo XML" onclick="generaArchivoNomina(\'XML\', \'' + row.idRegistro+ '\');" />';
-	                        return rowElement;
-	                      }
-	                 },
-	                 {
-		                 targets: 9,
-	                    render: function (data, type, row) {
-	                    	rowElement = '<img class="" src="/theme-falcon/repse247/img/pdf26.png" alt="" style="cursor: pointer;" title="Ver PDF" data-bs-toggle="tooltip" data-bs-placement="top" title="Archivo PDF" onclick="generaArchivoNomina(\'PDF\', \'' + row.idRegistro+ '\');" />';
-	                        return rowElement;
-	                      }
-	                 },
-	                 {	targets: 10,
-					        render: function (data, type, row) {
-					        	rowElement = '<a href="javascript:generaArchivoNomina(\'PDF\', \'' + row.idRegistro+ '\');">' + row.uuid + '</a>';
-					            return rowElement;
-					        }
-					    },
-				    {
-				        targets: 0,
-				        render: function (data, type, row) {
-				            rowElement = '<div class="d-flex flex-column flex-sm-row text-center" style="width: 50px; text-align: center;">';
-				            rowElement += '<button class="btn btn-falcon-default dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</button>';
-				            rowElement += '<div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="dropdownMenuButton">';
-				            rowElement += '<a class="dropdown-item text-danger" href="javascript:eliminaBovedaNomina(\'' + row.uuid + '\');">'+BTN_ELIMINAR_MENU+'</a>';
-				            rowElement += '</div>';
-				            rowElement += '</div>';
-				                return rowElement;
-				          }
-				    }
-				  ],
-		          initComplete: function () {
-		        	  var btns = $('.dt-button');
-		              btns.removeClass('dt-button');
-		              
-		              var btnsSubMenu = $('.dtb-b2');
-		              btnsSubMenu.addClass('dropdown-menu dropdown-menu-end py-0 show');
-		              
-		           },
-				  drawCallback: function () {
-					  
-				  }
-			});
-			
-		} catch(e) {
-			alert('usuarios()_'+e);
-		};
-		
-		tablaDetalleNomina.on( 'draw', function () {
-			 $('[data-toggle="tooltip"]').tooltip();
-		} );
-			
-	}); 
+                type: 'POST'
+            },
+            aoColumns: [
+                { mData: null }, // 0 Acciones
+                { mData: "rfcReceptor" }, // 1 RFC
+                { mData: "razonSocialReceptor" }, // 2 Razon Social
+                { mData: "subTotal" }, // 3 (Total Percepciones)
+                { mData: "totalExcento" }, // 4
+                { mData: "totalGravado" }, // 5
+                { mData: "totalOtros" }, // 6
+                { mData: "descuento" }, // 7 (Total Deducciones)
+                { mData: "total" }, // 8 (Neto a pagar)
+                { mData: null, sClass: "center" }, // 9 XML
+                { mData: null, sClass: "center" }, // 10 PDF
+                { mData: "uuid" }, // 11 UUID
+                { mData: "fechaFactura" }, // 12
+                // Ocultas (compatibilidad)
+                { mData: "totalPercepciones" },
+                { mData: "totalDeducciones" }
+            ],
+            columnDefs: [
+                // === CORRECCIÓN APLICADA AQUÍ ===
+                // XML (Columna 9 en tu estructura de filtros)
+                {
+                    targets: 9,
+                    searchable: false,
+                    sortable: false,
+                    render: function(data, type, row) {
+                        // Se usa la imagen moderna y la función generaArchivoNomina
+                        return '<img class="" src="/theme-falcon/repse247/img/xml26.png" alt="" style="cursor: pointer;" title="Ver XML" data-bs-toggle="tooltip" data-bs-placement="top" title="Archivo XML" onclick="generaArchivoNomina(\'XML\', \'' + row.idRegistro + '\');" />';
+                    }
+                },
+                // PDF (Columna 10)
+                {
+                    targets: 10,
+                    searchable: false,
+                    sortable: false,
+                    render: function(data, type, row) {
+                        // Se usa la imagen moderna y la función generaArchivoNomina
+                        return '<img class="" src="/theme-falcon/repse247/img/pdf26.png" alt="" style="cursor: pointer;" title="Ver PDF" data-bs-toggle="tooltip" data-bs-placement="top" title="Archivo PDF" onclick="generaArchivoNomina(\'PDF\', \'' + row.idRegistro + '\');" />';
+                    }
+                },
+                // UUID (Columna 11) - Enlace al PDF
+                {
+                    targets: 11,
+                    searchable: false,
+                    sortable: false,
+                    render: function(data, type, row) {
+                        // Se actualiza el enlace para usar generaArchivoNomina
+                        return '<a href="javascript:generaArchivoNomina(\'PDF\', \'' + row.idRegistro + '\');">' + row.uuid + '</a>';
+                    }
+                },
+                // ================================
 
+                // Columnas ocultas de compatibilidad
+                {
+                    targets: [13, 14],
+                    visible: false,
+                    searchable: false
+                },
+                // Acciones
+                {
+                    targets: 0,
+                    searchable: false,
+                    sortable: false,
+                    render: function(data, type, row) {
+                        var retorno = "";
+                        retorno += '<div class="dropdown font-sans-serif position-static">';
+                        retorno += '<button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="dropdown0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">';
+                        retorno += '<span class="fas fa-ellipsis-h fs--1"></span></button>';
+                        retorno += '<div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="dropdown0">';
+                        retorno += '<div class="bg-white py-2">';
+                        // También corregimos las acciones del menú
+                        retorno += '<a class="dropdown-item" href="javascript:generaArchivoNomina(\'XML\', \'' + row.idRegistro + '\');">Descargar XML</a>';
+                        retorno += '<a class="dropdown-item" href="javascript:generaArchivoNomina(\'PDF\', \'' + row.idRegistro + '\');">Descargar PDF</a>';
+                        retorno += '</div></div></div>';
+                        return retorno;
+                    }
+                }
+            ],
+            initComplete: function() {
+                var btns = $('.dt-button');
+                btns.removeClass('dt-button');
 
+                var btnsSubMenu = $('.dtb-b2');
+                btnsSubMenu.addClass('dropdown-menu dropdown-menu-end py-0 show');
 
+            },
+            drawCallback: function() {
 
+            }
+        });
 
+    } catch (e) {
+        alert('usuarios()_' + e);
+    };
 
-	function abreModal_Nomina(opcion, id) { 
-		switch(opcion) {
-		case "nuevo" :
-			$("#btnSometer_Nomina").prop('disabled', false);
-			iniciaFormNomina();    	
-			$('#myModalDetalle_Nomina').modal('show');
-			break;
-		default :
-		}
-	}
-	
-	
+    tablaDetalleNomina.on('draw', function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 
+    // --- Inicia Listeners de Filtros (del archivo CORREGIR) ---
+    /* --- ENTER global en inputs/selects del thead --- */
+    $(document)
+        .off('keydown.nominaEnterLikeEmitidos')
+        .on('keydown.nominaEnterLikeEmitidos',
+            '#tablaDetalleNomina thead tr.filters :input, .dtfh-floatingparent thead tr.filters :input',
+            function(e) {
+                if (e.which == 13) {
+                    e.preventDefault();
+                    // Al dar enter, forzamos recarga
+                    $('#tablaDetalleNomina').DataTable().ajax.reload();
+                }
+            });
 
-	function iniciaFormNomina(){
-		/* Reset al Formulario */ 
-		$("#frm-Carga-XML-Nomina").find('.has-success').removeClass("has-success");
-	    $("#frm-Carga-XML-Nomina").find('.has-error').removeClass("has-error");
-		$('#frm-Carga-XML-Nomina')[0].reset(); 
-		$('#frm-Carga-XML-Nomina').removeClass("was-validated"); 
-		   
-	}
+    /* --- Inicializa defaults y handlers por campo --- */
+    $(function() {
+        // Textos
+        initDxLikeFilterN({ inputId: '#rfcFilterInputN', hiddenOpId: '#rfcOperatorN', targetInput: '#rfc_Nomina' });
+        initDxLikeFilterN({ inputId: '#razonFilterInputN', hiddenOpId: '#razonOperatorN', targetInput: '#razonSocial_Nomina' });
+        initDxLikeFilterN({ inputId: '#uuidFilterInputN', hiddenOpId: '#uuidOperatorN', targetInput: '#uuid_Nomina' });
+
+        // Numéricos
+        initNumericDxFilterN({ v1Id: '#totalFilter1N', v2Id: '#totalFilter2N', opHiddenId: '#totalOperatorN' });
+        initNumericDxFilterN({ v1Id: '#subFilter1N', v2Id: '#subFilter2N', opHiddenId: '#subOperatorN' });
+        initNumericDxFilterN({ v1Id: '#descFilter1N', v2Id: '#descFilter2N', opHiddenId: '#descOperatorN' });
+        // Agrega aquí los demás si faltan en tu versión original, respetando lo que tenías
+    });
+
+});
+
+// === FUNCIÓN DE REDIRECCIÓN (Tomada del archivo correcto) ===
+function generaArchivoNomina(tipo, idRegistro) {
+    document.getElementById('idRegistroP_Nomina').value = idRegistro;
+    document.getElementById('tipoArchivoP_Nomina').value = tipo;
+    document.frmBovedaNomina.submit();
+}
+
+function abreModal_Nomina(opcion, id) {
+    switch (opcion) {
+        case "nuevo":
+            $("#btnSometer_Nomina").prop('disabled', false);
+            iniciaFormNomina();
+            $('#myModalDetalle_Nomina').modal('show');
+            break;
+        default:
+    }
+}
+
+function iniciaFormNomina() {
+    $("#frm-Carga-XML-Nomina").find('.has-success').removeClass("has-success");
+    $("#frm-Carga-XML-Nomina").find('.has-error').removeClass("has-error");
+    $('#frm-Carga-XML-Nomina')[0].reset();
+    $('#frm-Carga-XML-Nomina').removeClass("was-validated");
+}
 
 	function generaArchivoNomina(tipo, idRegistro){
 		 document.getElementById('idRegistroP_Nomina').value = idRegistro;
@@ -1337,7 +1393,7 @@
 			try{
 				 var table = $('#tablaDetalleNomina').DataTable();
 				 var bandPrimero = true;
-				 table.column(10, { search:'applied' }).data().each(function(value, index) {
+				 table.column(11, { search:'applied' }).data().each(function(value, index) {
 					 if (bandPrimero){
 						 llaveRegistros = value;
 					 }else{

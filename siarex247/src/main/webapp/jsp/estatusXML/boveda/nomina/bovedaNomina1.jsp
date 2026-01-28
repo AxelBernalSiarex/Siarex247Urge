@@ -262,223 +262,244 @@
 					  <input type="hidden" id="dateOperatorN"  value="eq" />
 					<table id="tablaDetalleNomina"class="table mb-0 data-table fs--1">
 						<thead class="bg-200 text-900">
-							<tr>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ15">Acciones</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ16">RFC Receptor</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ17">Raz&oacute;n Social Receptor</th>								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ20">Total</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ21">Sub-Total</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ22">Descuento</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ23">Total Percepciones</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ24">Total Deducciones</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ25">XML</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ26">PDF</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ27">UUID</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ28">Fecha Factura</th>
-								
-							</tr>
+							
+						<tr>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ15">Acciones</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ16">RFC Receptor</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ17">Raz&oacute;n Social Receptor</th>
+
+							<!-- Total percepciones (se toma de Sub-Total) -->
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ21">Sub-Total</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ33">Exentas ISR</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ34">Gravadas ISR</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ35">Otros Pagos</th>
+
+							<!-- Total deducciones (se toma de Descuento) -->
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ22">Total Total</th>
+
+							<!-- Neto a pagar (se toma de Total) -->
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ20">Total</th>
+
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ25">XML</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ26">PDF</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ27">UUID</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ28">Fecha Factura</th>
+
+							<!-- columnas ocultas (se conservan para compatibilidad) -->
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ23" style="display:none;">Total Percepciones</th>
+							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ24" style="display:none;">Total Deducciones</th>
+						</tr>
+
+
 <!-- Filtros -->
-					   <tr class="filters">
+<tr class="filters">
   <!-- 1: Acciones -->
-  <th></th>
+  <th>
+    <!-- Folio (se conserva oculto para compatibilidad) -->
+    <div style="display:none;">
+      <span class="op-btn" id="folioOpBtnN"><span class="op-label">=</span></span>
+      <input type="number" step="1" id="folioFilter1N" placeholder="Folio..." />
+      <input type="number" step="1" id="folioFilter2N" placeholder="y..." class="d-none" />
+      <div class="dx-like-menu" id="folioOpMenuN">
+        <ul>
+          <li data-op="eq">= Igual</li>
+          <li data-op="ne">≠ No igual</li>
+          <li data-op="lt">&lt; Menor que</li>
+          <li data-op="gt">&gt; Mayor que</li>
+          <li data-op="le">≤ Menor o igual</li>
+          <li data-op="ge">≥ Mayor o igual</li>
+          <li data-op="between">↔ Entre</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
 
   <!-- 2: RFC Receptor (texto) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="rfcOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
-						      <input type="text" id="rfcFilterInputN" placeholder="Filtrar RFC..." />
-						      <div class="dx-like-menu" id="rfcOpMenuN">
-						        <ul>
-						          <li data-op="contains">⊚ Contiene</li>
-						          <li data-op="notContains">⊘ No contiene</li>
-						          <li data-op="startsWith">&#8676; Empieza con</li>
-						          <li data-op="endsWith">&#8677; Termina con</li>
-						          <li data-op="equals">= Igual</li>
-						          <li data-op="notEquals">&ne; Distinto</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 3: RazÃ³n Social Receptor (texto) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="razonOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
-						      <input type="text" id="razonFilterInputN" placeholder="Filtrar razón social..." />
-						      <div class="dx-like-menu" id="razonOpMenuN">
-						        <ul>
-						          <li data-op="contains">⊚ Contiene</li>
-						          <li data-op="notContains">⊘ No contiene</li>
-						          <li data-op="startsWith">&#8676; Empieza con</li>
-						          <li data-op="endsWith">&#8677; Termina con</li>
-						          <li data-op="equals">= Igual</li>
-						          <li data-op="notEquals">&ne; Distinto</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th><!-- 6: Total (numÃ©rico) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="totalOpBtnN"><span class="op-label">=</span></span>
-						      <input type="number" step="any" id="totalFilter1N" placeholder="Total..." />
-						      <input type="number" step="any" id="totalFilter2N" placeholder="y..." class="d-none" />
-						      <div class="dx-like-menu" id="totalOpMenuN">
-						        <ul>
-						          <li data-op="eq">= Igual</li>
-						          <li data-op="ne">&ne; No igual</li>
-						          <li data-op="lt">&lt; Menor que</li>
-						          <li data-op="gt">&gt; Mayor que</li>
-						          <li data-op="le">&le; Menor o igual</li>
-						          <li data-op="ge">&ge; Mayor o igual</li>
-						          <li data-op="between">&#8596; Entre</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 7: Sub-Total (numÃ©rico) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="subOpBtnN"><span class="op-label">=</span></span>
-						      <input type="number" step="any" id="subFilter1N" placeholder="Sub-total..." />
-						      <input type="number" step="any" id="subFilter2N" placeholder="y..." class="d-none" />
-						      <div class="dx-like-menu" id="subOpMenuN">
-						        <ul>
-						          <li data-op="eq">= Igual</li>
-						          <li data-op="ne">&ne; No igual</li>
-						          <li data-op="lt">&lt; Menor que</li>
-						          <li data-op="gt">&gt; Mayor que</li>
-						          <li data-op="le">&le; Menor o igual</li>
-						          <li data-op="ge">&ge; Mayor o igual</li>
-						          <li data-op="between">&#8596; Entre</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 8: Descuento (numÃ©rico) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="descOpBtnN"><span class="op-label">=</span></span>
-						      <input type="number" step="any" id="descFilter1N" placeholder="Descuento..." />
-						      <input type="number" step="any" id="descFilter2N" placeholder="y..." class="d-none" />
-						      <div class="dx-like-menu" id="descOpMenuN">
-						        <ul>
-						          <li data-op="eq">= Igual</li>
-						          <li data-op="ne">&ne; No igual</li>
-						          <li data-op="lt">&lt; Menor que</li>
-						          <li data-op="gt">&gt; Mayor que</li>
-						          <li data-op="le">&le; Menor o igual</li>
-						          <li data-op="ge">&ge; Mayor o igual</li>
-						          <li data-op="between">&#8596; Entre</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 9: Total Percepciones (numÃ©rico) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="percOpBtnN"><span class="op-label">=</span></span>
-						      <input type="number" step="any" id="percFilter1N" placeholder="Percepciones..." />
-						      <input type="number" step="any" id="percFilter2N" placeholder="y..." class="d-none" />
-						      <div class="dx-like-menu" id="percOpMenuN">
-						        <ul>
-						          <li data-op="eq">= Igual</li>
-						          <li data-op="ne">&ne; No igual</li>
-						          <li data-op="lt">&lt; Menor que</li>
-						          <li data-op="gt">&gt; Mayor que</li>
-						          <li data-op="le">&le; Menor o igual</li>
-						          <li data-op="ge">&ge; Mayor o igual</li>
-						          <li data-op="between">&#8596; Entre</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 10: Total Deducciones (numÃ©rico) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="dedOpBtnN"><span class="op-label">=</span></span>
-						      <input type="number" step="any" id="dedFilter1N" placeholder="Deducciones..." />
-						      <input type="number" step="any" id="dedFilter2N" placeholder="y..." class="d-none" />
-						      <div class="dx-like-menu" id="dedOpMenuN">
-						        <ul>
-						          <li data-op="eq">= Igual</li>
-						          <li data-op="ne">&ne; No igual</li>
-						          <li data-op="lt">&lt; Menor que</li>
-						          <li data-op="gt">&gt; Mayor que</li>
-						          <li data-op="le">&le; Menor o igual</li>
-						          <li data-op="ge">&ge; Mayor o igual</li>
-						          <li data-op="between">&#8596; Entre</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 11: XML -->
-						  <th></th>
-						  <!-- 12: PDF -->
-						  <th></th>
-						
-						  <!-- 13: UUID (texto) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="uuidOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
-						      <input type="text" id="uuidFilterInputN" placeholder="Filtrar UUID..." />
-						      <div class="dx-like-menu" id="uuidOpMenuN">
-						        <ul>
-						          <li data-op="contains">⊚ Contiene</li>
-						          <li data-op="notContains">⊘ No contiene</li>
-						          <li data-op="startsWith">&#8676; Empieza con</li>
-						          <li data-op="endsWith">&#8677; Termina con</li>
-						          <li data-op="equals">= Igual</li>
-						          <li data-op="notEquals">&ne; Distinto</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 14: Fecha Factura (fecha con operador
-						  <th>
-						    <div class="dx-like-filter" style="min-width:260px;">
-						      <span class="op-btn" id="dateOpBtnN"><span class="op-label">=</span></span>
-						      <input type="date" id="dateFilter1N" />
-						      <input type="date" id="dateFilter2N" class="d-none" />
-						      <div class="dx-like-menu" id="dateOpMenuN">
-						        <ul>
-						          <li data-op="eq">= Igual</li>
-						          <li data-op="ne">&ne; No igual</li>
-						          <li data-op="lt">&lt; Menor que</li>
-						          <li data-op="gt">&gt; Mayor que</li>
-						          <li data-op="le">&le; Menor o igual</li>
-						          <li data-op="ge">&ge; Mayor o igual</li>
-						          <li data-op="bt">&#8596; Entre</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						    <input type="hidden" id="dateOperatorN" value="eq">
-						  </th>) -->
-						  
-						  
-						  
-						  
-						  		<th>
-								  <input type="hidden" id="dateOperatorN" value="eq">
-								  <input type="hidden" id="dateFilter1N">
-								  <input type="hidden" id="dateFilter2N">
-								  <!-- opcional, placeholder por si algún JS toca el label -->
-								  <span id="dateOpBtn" class="d-none"><span class="op-label">=</span></span>
-								</th>
-						</tr>
+  <th>
+    <div class="dx-like-filter">
+      <span class="op-btn" id="rfcOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
+      <input type="text" id="rfcFilterInputN" placeholder="Filtrar RFC..." />
+      <div class="dx-like-menu" id="rfcOpMenuN">
+        <ul>
+          <li data-op="contains">⊚ Contiene</li>
+          <li data-op="notContains">⊘ No contiene</li>
+          <li data-op="startsWith">&#8676; Empieza con</li>
+          <li data-op="endsWith">&#8677; Termina con</li>
+          <li data-op="equals">= Igual</li>
+          <li data-op="notEquals">&ne; Distinto</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
+
+  <!-- 3: Razón Social Receptor (texto) -->
+  <th>
+    <div class="dx-like-filter">
+      <span class="op-btn" id="razonOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
+      <input type="text" id="razonFilterInputN" placeholder="Filtrar razón social..." />
+      <div class="dx-like-menu" id="razonOpMenuN">
+        <ul>
+          <li data-op="contains">⊚ Contiene</li>
+          <li data-op="notContains">⊘ No contiene</li>
+          <li data-op="startsWith">&#8676; Empieza con</li>
+          <li data-op="endsWith">&#8677; Termina con</li>
+          <li data-op="equals">= Igual</li>
+          <li data-op="notEquals">&ne; Distinto</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
+
+  <!-- 4: Total Percepciones (numérico) -> Sub-Total -->
+  <th>
+    <div class="dx-like-filter">
+      <span class="op-btn" id="subOpBtnN"><span class="op-label">=</span></span>
+      <input type="number" step="any" id="subFilter1N" placeholder="Total percepciones..." />
+      <input type="number" step="any" id="subFilter2N" placeholder="y..." class="d-none" />
+      <div class="dx-like-menu" id="subOpMenuN">
+        <ul>
+          <li data-op="eq">= Igual</li>
+          <li data-op="ne">&ne; No igual</li>
+          <li data-op="lt">&lt; Menor que</li>
+          <li data-op="gt">&gt; Mayor que</li>
+          <li data-op="le">&le; Menor o igual</li>
+          <li data-op="ge">&ge; Mayor o igual</li>
+          <li data-op="between">&#8596; Entre</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
+
+  <!-- 5: Exentas ISR (sin filtro por ahora) -->
+  <th></th>
+
+  <!-- 6: Gravadas ISR (sin filtro por ahora) -->
+  <th></th>
+
+  <!-- 7: Otros Pagos (sin filtro por ahora) -->
+  <th></th>
+
+  <!-- 8: Total Deducciones (numérico) -> Descuento -->
+  <th>
+    <div class="dx-like-filter">
+      <span class="op-btn" id="descOpBtnN"><span class="op-label">=</span></span>
+      <input type="number" step="any" id="descFilter1N" placeholder="Total deducciones..." />
+      <input type="number" step="any" id="descFilter2N" placeholder="y..." class="d-none" />
+      <div class="dx-like-menu" id="descOpMenuN">
+        <ul>
+          <li data-op="eq">= Igual</li>
+          <li data-op="ne">&ne; No igual</li>
+          <li data-op="lt">&lt; Menor que</li>
+          <li data-op="gt">&gt; Mayor que</li>
+          <li data-op="le">&le; Menor o igual</li>
+          <li data-op="ge">&ge; Mayor o igual</li>
+          <li data-op="between">&#8596; Entre</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
+
+  <!-- 9: Neto a pagar (numérico) -> Total -->
+  <th>
+    <div class="dx-like-filter">
+      <span class="op-btn" id="totalOpBtnN"><span class="op-label">=</span></span>
+      <input type="number" step="any" id="totalFilter1N" placeholder="Neto a pagar..." />
+      <input type="number" step="any" id="totalFilter2N" placeholder="y..." class="d-none" />
+      <div class="dx-like-menu" id="totalOpMenuN">
+        <ul>
+          <li data-op="eq">= Igual</li>
+          <li data-op="ne">&ne; No igual</li>
+          <li data-op="lt">&lt; Menor que</li>
+          <li data-op="gt">&gt; Mayor que</li>
+          <li data-op="le">&le; Menor o igual</li>
+          <li data-op="ge">&ge; Mayor o igual</li>
+          <li data-op="between">&#8596; Entre</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
+
+  <!-- 10: XML -->
+  <th></th>
+
+  <!-- 11: PDF -->
+  <th></th>
+
+  <!-- 12: UUID (texto) -->
+  <th>
+    <div class="dx-like-filter">
+      <span class="op-btn" id="uuidOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
+      <input type="text" id="uuidFilterInputN" placeholder="Filtrar UUID..." />
+      <div class="dx-like-menu" id="uuidOpMenuN">
+        <ul>
+          <li data-op="contains">⊚ Contiene</li>
+          <li data-op="notContains">⊘ No contiene</li>
+          <li data-op="startsWith">&#8676; Empieza con</li>
+          <li data-op="endsWith">&#8677; Termina con</li>
+          <li data-op="equals">= Igual</li>
+          <li data-op="notEquals">&ne; Distinto</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
+
+  <!-- 13: Fecha Factura (se filtra arriba; aquí solo se conservan inputs ocultos) -->
+  <th>
+    <input type="hidden" id="dateFilter1N" />
+    <input type="hidden" id="dateFilter2N" />
+    <input type="hidden" id="dateOpBtnN" />
+  </th>
+
+  <!-- 14: Total Percepciones (oculto, compatibilidad) -->
+  <th style="display:none;">
+    <div class="dx-like-filter">
+      <span class="op-btn" id="percOpBtnN"><span class="op-label">=</span></span>
+      <input type="number" step="any" id="percFilter1N" placeholder="Total percepciones..." />
+      <input type="number" step="any" id="percFilter2N" placeholder="y..." class="d-none" />
+      <div class="dx-like-menu" id="percOpMenuN">
+        <ul>
+          <li data-op="eq">= Igual</li>
+          <li data-op="ne">&ne; No igual</li>
+          <li data-op="lt">&lt; Menor que</li>
+          <li data-op="gt">&gt; Mayor que</li>
+          <li data-op="le">&le; Menor o igual</li>
+          <li data-op="ge">&ge; Mayor o igual</li>
+          <li data-op="between">&#8596; Entre</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
+
+  <!-- 15: Total Deducciones (oculto, compatibilidad) -->
+  <th style="display:none;">
+    <div class="dx-like-filter">
+      <span class="op-btn" id="dedOpBtnN"><span class="op-label">=</span></span>
+      <input type="number" step="any" id="dedFilter1N" placeholder="Total deducciones..." />
+      <input type="number" step="any" id="dedFilter2N" placeholder="y..." class="d-none" />
+      <div class="dx-like-menu" id="dedOpMenuN">
+        <ul>
+          <li data-op="eq">= Igual</li>
+          <li data-op="ne">&ne; No igual</li>
+          <li data-op="lt">&lt; Menor que</li>
+          <li data-op="gt">&gt; Mayor que</li>
+          <li data-op="le">&le; Menor o igual</li>
+          <li data-op="ge">&ge; Mayor o igual</li>
+          <li data-op="between">&#8596; Entre</li>
+          <li data-op="reset">⟲ Reset</li>
+        </ul>
+      </div>
+    </div>
+  </th>
+</tr>
+
 
 						</thead>
 					</table>
@@ -922,14 +943,18 @@
 						document.getElementById("BOVEDA_NOMINA_ETQ15").innerHTML = data.ETQ15;
 						document.getElementById("BOVEDA_NOMINA_ETQ16").innerHTML = data.ETQ16;
 						document.getElementById("BOVEDA_NOMINA_ETQ17").innerHTML = data.ETQ17;
-						if (document.getElementById("BOVEDA_NOMINA_ETQ18")) document.getElementById("BOVEDA_NOMINA_ETQ18").innerHTML = data.ETQ18;
-						if (document.getElementById("BOVEDA_NOMINA_ETQ19")) document.getElementById("BOVEDA_NOMINA_ETQ19").innerHTML = data.ETQ19;
+					
 						document.getElementById("BOVEDA_NOMINA_ETQ20").innerHTML = data.ETQ20;
 						document.getElementById("BOVEDA_NOMINA_ETQ21").innerHTML = data.ETQ21;
 						document.getElementById("BOVEDA_NOMINA_ETQ22").innerHTML = data.ETQ22;
 						document.getElementById("BOVEDA_NOMINA_ETQ23").innerHTML = data.ETQ23;
 						document.getElementById("BOVEDA_NOMINA_ETQ24").innerHTML = data.ETQ24;
-						document.getElementById("BOVEDA_NOMINA_ETQ25").innerHTML = data.ETQ25;
+						document.getElementById("BOVEDA_NOMINA_ETQ33").innerHTML = data.ETQ33;
+						document.getElementById("BOVEDA_NOMINA_ETQ34").innerHTML = data.ETQ34;
+						document.getElementById("BOVEDA_NOMINA_ETQ35").innerHTML = data.ETQ35;
+						
+     
+                        document.getElementById("BOVEDA_NOMINA_ETQ25").innerHTML = data.ETQ25;
 						document.getElementById("BOVEDA_NOMINA_ETQ26").innerHTML = data.ETQ26;
 						document.getElementById("BOVEDA_NOMINA_ETQ27").innerHTML = data.ETQ27;
 						document.getElementById("BOVEDA_NOMINA_ETQ28").innerHTML = data.ETQ28;

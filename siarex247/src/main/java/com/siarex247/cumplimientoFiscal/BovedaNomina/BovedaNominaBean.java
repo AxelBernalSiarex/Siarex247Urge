@@ -68,7 +68,6 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        List<Object> params = new ArrayList<>();
 
 	        // Tu SELECT base espera primero el tipo de comprobante
-	        params.add("N");
 
 	        // Where que SIEMPRE agrega " AND ... " (porque la base ya tiene WHERE)
 	        FiltrosBovedaNomina.Where w = new FiltrosBovedaNomina.Where(sb, params) {
@@ -148,6 +147,15 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	            b.setTipoComprobante(Utils.noNulo(rs.getString(17)));
 	            b.setFechaTimbrado(Utils.noNulo(rs.getString(18)));
 
+                // Nuevos campos: Otros Pagos, Exentas ISR, Gravadas ISR
+                b.setTotalOtrosDouble(rs.getDouble(19));
+                b.setTotalOtros(decimal.format(rs.getDouble(19)));
+                b.setTotalExcentoDouble(rs.getDouble(20));
+                b.setTotalExcento(decimal.format(rs.getDouble(20)));
+                b.setTotalGravadoDouble(rs.getDouble(21));
+                b.setTotalGravado(decimal.format(rs.getDouble(21)));
+
+
 	            lista.add(b);
 	        }
 	    } catch (Exception e) {
@@ -187,10 +195,9 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        // Armamos el SELECT base (el mismo de detalle) y le aplicamos filtros.
 	        StringBuilder inner = new StringBuilder(BovedaNominaQuerys.getTotalRegistros(esquema));
 	        List<Object> params = new ArrayList<>();
-	        // Primer parámetro de la consulta base: tipo de comprobante Nómina
-	        params.add("N");
+	        // La consulta base viene con WHERE 1=1 (sin parámetro TIPO_COMPROBANTE)
 
-	        // WHERE que SIEMPRE agrega AND (porque el base ya trae WHERE TIPO_COMPROBANTE = ?)
+	        // WHERE que SIEMPRE agrega AND (porque el base ya trae WHERE 1=1)
 	        FiltrosBovedaNomina.Where w = new FiltrosBovedaNomina.Where(inner, params) {
 	            @Override
 	            public void and(String frag, Object... vals) {
