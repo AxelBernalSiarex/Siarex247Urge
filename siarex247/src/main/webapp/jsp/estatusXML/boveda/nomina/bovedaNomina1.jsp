@@ -33,12 +33,6 @@
 			
 			/* Alcance especifico a la tabla de Emitidos */
 			#tablaDetalleNomina thead tr.filters th{ position:relative; overflow:visible; }
-			
-			
-			/* Ancho recomendado para SERIE (columna id=BOVEDA_NOMINA_ETQ18) */
-			#tablaDetalleNomina th#BOVEDA_NOMINA_ETQ18, #tablaDetalleNomina td:nth-child(4){ min-width: 180px; }
-			
-			
 			.d-none { display:none; }
 			</style>
 			
@@ -209,8 +203,8 @@
 					</div>
 				</div>
 				
-				<label class="col-sm-2 col-form-label" for="folio_Nomina" id="BOVEDA_NOMINA_ETQ14">Folio</label>
-				<div class="col-sm-3">
+				<label class="col-sm-2 col-form-label d-none" for="folio_Nomina" id="BOVEDA_NOMINA_ETQ14">Folio</label>
+				<div class="col-sm-3 d-none">
 					<div class="form-group">
 					   <input id="folio_Nomina" name="folio" class="form-control" type="text"  value="" maxlength="100"  />
 					</div>
@@ -228,8 +222,8 @@
         
         <div class="mb-2 row">
 
-				<label class="col-sm-1 col-form-label" for="serie_Nomina" id="BOVEDA_NOMINA_ETQ12">Serie</label>
-				<div class="col-sm-2">
+				<label class="col-sm-1 col-form-label d-none" for="serie_Nomina" id="BOVEDA_NOMINA_ETQ12">Serie</label>
+				<div class="col-sm-2 d-none">
 					<div class="form-group">
 					   <input id="serie_Nomina" name="serie" class="form-control" type="text"  value="" maxlength="100"  />
 					</div>
@@ -271,10 +265,7 @@
 							<tr>
 								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ15">Acciones</th>
 								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ16">RFC Receptor</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ17">Raz&oacute;n Social Receptor</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ18">Serie</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ19">Folio</th>
-								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ20">Total</th>
+								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ17">Raz&oacute;n Social Receptor</th>								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ20">Total</th>
 								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ21">Sub-Total</th>
 								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ22">Descuento</th>
 								<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ23">Total Percepciones</th>
@@ -326,49 +317,7 @@
 						        </ul>
 						      </div>
 						    </div>
-						  </th>
-						
-						  <!-- 4: Serie (texto) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="serieOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
-						      <input type="text" id="serieFilterInputN" placeholder="Filtrar serie..." />
-						      <div class="dx-like-menu" id="serieOpMenuN">
-						        <ul>
-						          <li data-op="contains">⊚ Contiene</li>
-						          <li data-op="notContains">⊘ No contiene</li>
-						          <li data-op="startsWith">&#8676; Empieza con</li>
-						          <li data-op="endsWith">&#8677; Termina con</li>
-						          <li data-op="equals">= Igual</li>
-						          <li data-op="notEquals">&ne; Distinto</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 5: Folio (numÃ©rico) -->
-						  <th>
-						    <div class="dx-like-filter">
-						      <span class="op-btn" id="folioOpBtnN"><span class="op-label">=</span></span>
-						      <input type="number" step="any" id="folioFilter1N" placeholder="Folio..." />
-						      <input type="number" step="any" id="folioFilter2N" placeholder="y..." class="d-none" />
-						      <div class="dx-like-menu" id="folioOpMenuN">
-						        <ul>
-						          <li data-op="eq">= Igual</li>
-						          <li data-op="ne">&ne; No igual</li>
-						          <li data-op="lt">&lt; Menor que</li>
-						          <li data-op="gt">&gt; Mayor que</li>
-						          <li data-op="le">&le; Menor o igual</li>
-						          <li data-op="ge">&ge; Mayor o igual</li>
-						          <li data-op="between">&#8596; Entre</li>
-						          <li data-op="reset">⟲ Reset</li>
-						        </ul>
-						      </div>
-						    </div>
-						  </th>
-						
-						  <!-- 6: Total (numÃ©rico) -->
+						  </th><!-- 6: Total (numÃ©rico) -->
 						  <th>
 						    <div class="dx-like-filter">
 						      <span class="op-btn" id="totalOpBtnN"><span class="op-label">=</span></span>
@@ -973,8 +922,8 @@
 						document.getElementById("BOVEDA_NOMINA_ETQ15").innerHTML = data.ETQ15;
 						document.getElementById("BOVEDA_NOMINA_ETQ16").innerHTML = data.ETQ16;
 						document.getElementById("BOVEDA_NOMINA_ETQ17").innerHTML = data.ETQ17;
-						document.getElementById("BOVEDA_NOMINA_ETQ18").innerHTML = data.ETQ18;
-						document.getElementById("BOVEDA_NOMINA_ETQ19").innerHTML = data.ETQ19;
+						if (document.getElementById("BOVEDA_NOMINA_ETQ18")) document.getElementById("BOVEDA_NOMINA_ETQ18").innerHTML = data.ETQ18;
+						if (document.getElementById("BOVEDA_NOMINA_ETQ19")) document.getElementById("BOVEDA_NOMINA_ETQ19").innerHTML = data.ETQ19;
 						document.getElementById("BOVEDA_NOMINA_ETQ20").innerHTML = data.ETQ20;
 						document.getElementById("BOVEDA_NOMINA_ETQ21").innerHTML = data.ETQ21;
 						document.getElementById("BOVEDA_NOMINA_ETQ22").innerHTML = data.ETQ22;
@@ -1003,25 +952,23 @@
 </script>
 
 			<script>
-			  $(function () {
-			    // Texto
-			    initDxLikeFilterN({ btnId:'#rfcOpBtnN',   menuId:'#rfcOpMenuN',   inputId:'#rfcFilterInputN',   hiddenOpId:'#rfcOperatorN' });
-			    initDxLikeFilterN({ btnId:'#razonOpBtnN', menuId:'#razonOpMenuN', inputId:'#razonFilterInputN', hiddenOpId:'#razonOperatorN' });
-			    initDxLikeFilterN({ btnId:'#serieOpBtnN', menuId:'#serieOpMenuN', inputId:'#serieFilterInputN', hiddenOpId:'#serieOperatorN' });
-			    initDxLikeFilterN({ btnId:'#uuidOpBtnN',  menuId:'#uuidOpMenuN',  inputId:'#uuidFilterInputN',  hiddenOpId:'#uuidOperatorN' });
-			
-			    // NumÃ©ricos
-			    initNumericDxFilterN({ btnId:'#folioOpBtnN', menuId:'#folioOpMenuN', v1Id:'#folioFilter1N', v2Id:'#folioFilter2N', opHiddenId:'#folioOperatorN' });
-			    initNumericDxFilterN({ btnId:'#totalOpBtnN', menuId:'#totalOpMenuN', v1Id:'#totalFilter1N', v2Id:'#totalFilter2N', opHiddenId:'#totalOperatorN' });
-			    initNumericDxFilterN({ btnId:'#subOpBtnN',   menuId:'#subOpMenuN',   v1Id:'#subFilter1N',   v2Id:'#subFilter2N',   opHiddenId:'#subOperatorN' });
-			    initNumericDxFilterN({ btnId:'#descOpBtnN',  menuId:'#descOpMenuN',  v1Id:'#descFilter1N',  v2Id:'#descFilter2N',  opHiddenId:'#descOperatorN' });
-			    initNumericDxFilterN({ btnId:'#percOpBtnN',  menuId:'#percOpMenuN',  v1Id:'#percFilter1N',  v2Id:'#percFilter2N',  opHiddenId:'#percOperatorN' });
-			    initNumericDxFilterN({ btnId:'#dedOpBtnN',   menuId:'#dedOpMenuN',   v1Id:'#dedFilter1N',   v2Id:'#dedFilter2N',   opHiddenId:'#dedOperatorN' });
-			
-			    // Fecha
-			    initDxLikeDateFilterN({ btnId:'#dateOpBtnN', menuId:'#dateOpMenuN', input1Id:'#dateFilter1N', input2Id:'#dateFilter2N', hiddenOpId:'#dateOperatorN' });
-			  });
-			</script>
+  $(function () {
+    // Texto
+    initDxLikeFilterN({ btnId:'#rfcOpBtnN',   menuId:'#rfcOpMenuN',   inputId:'#rfcFilterInputN',   hiddenOpId:'#rfcOperatorN' });
+    initDxLikeFilterN({ btnId:'#razonOpBtnN', menuId:'#razonOpMenuN', inputId:'#razonFilterInputN', hiddenOpId:'#razonOperatorN' });
+    initDxLikeFilterN({ btnId:'#uuidOpBtnN',  menuId:'#uuidOpMenuN',  inputId:'#uuidFilterInputN',  hiddenOpId:'#uuidOperatorN' });
+
+    // Numéricos
+    initNumericDxFilterN({ btnId:'#totalOpBtnN', menuId:'#totalOpMenuN', v1Id:'#totalFilter1N', v2Id:'#totalFilter2N', opHiddenId:'#totalOperatorN' });
+    initNumericDxFilterN({ btnId:'#subOpBtnN',   menuId:'#subOpMenuN',   v1Id:'#subFilter1N',   v2Id:'#subFilter2N',   opHiddenId:'#subOperatorN' });
+    initNumericDxFilterN({ btnId:'#descOpBtnN',  menuId:'#descOpMenuN',  v1Id:'#descFilter1N',  v2Id:'#descFilter2N',  opHiddenId:'#descOperatorN' });
+    initNumericDxFilterN({ btnId:'#percOpBtnN',  menuId:'#percOpMenuN',  v1Id:'#percFilter1N',  v2Id:'#percFilter2N',  opHiddenId:'#percOperatorN' });
+    initNumericDxFilterN({ btnId:'#dedOpBtnN',   menuId:'#dedOpMenuN',   v1Id:'#dedFilter1N',   v2Id:'#dedFilter2N',   opHiddenId:'#dedOperatorN' });
+
+    // Fecha
+    initDxLikeDateFilterN({ btnId:'#dateOpBtnN', menuId:'#dateOpMenuN', input1Id:'#dateFilter1N', input2Id:'#dateFilter2N', hiddenOpId:'#dateOperatorN' });
+  });
+</script>
 
 
 			

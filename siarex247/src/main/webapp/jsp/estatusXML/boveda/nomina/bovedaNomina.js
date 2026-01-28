@@ -106,38 +106,35 @@
 					type: 'POST'
 				},
 				aoColumns : [
-					{ mData: null, "sClass": "alinearCentro"},
-					{ mData: "rfcReceptor", "sClass": "alinearCentro"},
-					{ mData: "razonSocialReceptor"},
-					{ mData: "serie", "sClass": "alinearCentro"},
-					{ mData: "folio", "sClass": "alinearCentro"},
-					{ mData: "total", "sClass": "alinearDerecha"},
-					{ mData: "subTotal", "sClass": "alinearDerecha"},
-					{ mData: "descuento", "sClass": "alinearDerecha"},
-					{ mData: "totalPercepciones", "sClass": "alinearDerecha"},
-					{ mData: "totalDeducciones", "sClass": "alinearDerecha"},
-					{ mData: null, "sClass": "alinearCentro"},
-					{ mData: null, "sClass": "alinearCentro"},
-					{ mData: "uuid"},
-					{ mData: "fechaFactura"},
-					
+					{ mData: null, "sClass": "alinearCentro"},              // 0 Acciones
+					{ mData: "rfcReceptor", "sClass": "alinearCentro"},      // 1 RFC Receptor
+					{ mData: "razonSocialReceptor"},                         // 2 Razón Social Receptor
+					{ mData: "total", "sClass": "alinearDerecha"},           // 3 Total
+					{ mData: "subTotal", "sClass": "alinearDerecha"},        // 4 Sub-Total
+					{ mData: "descuento", "sClass": "alinearDerecha"},       // 5 Descuento
+					{ mData: "totalPercepciones", "sClass": "alinearDerecha"},// 6 Total Percepciones
+					{ mData: "totalDeducciones", "sClass": "alinearDerecha"}, // 7 Total Deducciones
+					{ mData: null, "sClass": "alinearCentro"},               // 8 XML
+					{ mData: null, "sClass": "alinearCentro"},               // 9 PDF
+					{ mData: "uuid"},                                        // 10 UUID
+					{ mData: "fechaFactura"},                                // 11 Fecha Factura
 				],
 				columnDefs: [
 					 {
-	                    targets: 10,
+	                    targets: 8,
 	                    render: function (data, type, row) {
 	                    	rowElement = '<img class="" src="/theme-falcon/repse247/img/xml26.png" alt="" style="cursor: pointer;" title="Ver XML" data-bs-toggle="tooltip" data-bs-placement="top" title="Archivo XML" onclick="generaArchivoNomina(\'XML\', \'' + row.idRegistro+ '\');" />';
 	                        return rowElement;
 	                      }
 	                 },
 	                 {
-		                 targets: 11,
+		                 targets: 9,
 	                    render: function (data, type, row) {
 	                    	rowElement = '<img class="" src="/theme-falcon/repse247/img/pdf26.png" alt="" style="cursor: pointer;" title="Ver PDF" data-bs-toggle="tooltip" data-bs-placement="top" title="Archivo PDF" onclick="generaArchivoNomina(\'PDF\', \'' + row.idRegistro+ '\');" />';
 	                        return rowElement;
 	                      }
 	                 },
-	                 {	targets: 12,
+	                 {	targets: 10,
 					        render: function (data, type, row) {
 					        	rowElement = '<a href="javascript:generaArchivoNomina(\'PDF\', \'' + row.idRegistro+ '\');">' + row.uuid + '</a>';
 					            return rowElement;
@@ -1340,7 +1337,7 @@
 			try{
 				 var table = $('#tablaDetalleNomina').DataTable();
 				 var bandPrimero = true;
-				 table.column(12, { search:'applied' }).data().each(function(value, index) {
+				 table.column(10, { search:'applied' }).data().each(function(value, index) {
 					 if (bandPrimero){
 						 llaveRegistros = value;
 					 }else{
@@ -1808,25 +1805,22 @@
 	      });
 
 	  /* --- Inicializa defaults y handlers por campo --- */
-	  $(function(){
-	    // Textos
-	    initDxLikeFilterN({ inputId:'#rfcFilterInputN',   hiddenOpId:'#rfcOperatorN',   targetInput:'#rfc_Nomina' });
-	    initDxLikeFilterN({ inputId:'#razonFilterInputN', hiddenOpId:'#razonOperatorN', targetInput:'#razonSocial_Nomina' });
-	    initDxLikeFilterN({ inputId:'#serieFilterInputN', hiddenOpId:'#serieOperatorN', targetInput:'#serie_Nomina' });
-	    initDxLikeFilterN({ inputId:'#uuidFilterInputN',  hiddenOpId:'#uuidOperatorN',  targetInput:'#uuid_Nomina' });
+  $(function(){
+    // Textos
+    initDxLikeFilterN({ inputId:'#rfcFilterInputN',   hiddenOpId:'#rfcOperatorN',   targetInput:'#rfc_Nomina' });
+    initDxLikeFilterN({ inputId:'#razonFilterInputN', hiddenOpId:'#razonOperatorN', targetInput:'#razonSocial_Nomina' });
+    initDxLikeFilterN({ inputId:'#uuidFilterInputN',  hiddenOpId:'#uuidOperatorN',  targetInput:'#uuid_Nomina' });
 
-	    // Numéricos
-	    initNumericDxFilterN({ v1Id:'#folioFilter1N', v2Id:'#folioFilter2N', opHiddenId:'#folioOperatorN' });
-	    initNumericDxFilterN({ v1Id:'#totalFilter1N', v2Id:'#totalFilter2N', opHiddenId:'#totalOperatorN' });
-	    initNumericDxFilterN({ v1Id:'#subFilter1N',   v2Id:'#subFilter2N',   opHiddenId:'#subOperatorN' });
-	    initNumericDxFilterN({ v1Id:'#descFilter1N',  v2Id:'#descFilter2N',  opHiddenId:'#descOperatorN' });
-	    initNumericDxFilterN({ v1Id:'#percFilter1N',  v2Id:'#percFilter2N',  opHiddenId:'#percOperatorN' });
-	    initNumericDxFilterN({ v1Id:'#dedFilter1N',   v2Id:'#dedFilter2N',   opHiddenId:'#dedOperatorN' });
+    // Numéricos
+    initNumericDxFilterN({ v1Id:'#totalFilter1N', v2Id:'#totalFilter2N', opHiddenId:'#totalOperatorN' });
+    initNumericDxFilterN({ v1Id:'#subFilter1N',   v2Id:'#subFilter2N',   opHiddenId:'#subOperatorN' });
+    initNumericDxFilterN({ v1Id:'#descFilter1N',  v2Id:'#descFilter2N',  opHiddenId:'#descOperatorN' });
+    initNumericDxFilterN({ v1Id:'#percFilter1N',  v2Id:'#percFilter2N',  opHiddenId:'#percOperatorN' });
+    initNumericDxFilterN({ v1Id:'#dedFilter1N',   v2Id:'#dedFilter2N',   opHiddenId:'#dedOperatorN' });
 
-	    // Fecha
-	    initDxLikeDateFilterN({ input1Id:'#dateFilter1N', input2Id:'#dateFilter2N', hiddenOpId:'#dateOperatorN' });
-	  });
-
+    // Fecha
+    initDxLikeDateFilterN({ input1Id:'#dateFilter1N', input2Id:'#dateFilter2N', hiddenOpId:'#dateOperatorN' });
+  });
 	})(); // IIFE
 	
 
