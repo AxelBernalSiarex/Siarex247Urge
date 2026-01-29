@@ -91,12 +91,12 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 		  		}else {
 		  			dateOperator = getDateOperator();
 		  		}
-		  		dateOperator = "bt";
+		  		// dateOperator = "bt"; // (Opcional, mejor usar la lógica de arriba)
+		  		
 		  		BovedaNominaModel bovedaModel = new BovedaNominaModel();
-		  		//ArrayList<BovedaNominaForm> listaDetalle  = bovedaBean.detalleBoveda(con, rc.getEsquema(), Utils.noNulo(getRfc()), Utils.noNulo(getRazonSocial()), Utils.noNulo(getFolio()), Utils.noNulo(getSerie()), Utils.noNulo(fechaInicial), Utils.noNulo(getUuid()), Utils.noNulo(fechaFinal), getStart(), 20, false);
-		  		//int totalRegistro = bovedaBean.totalRegistros(con, rc.getEsquema(), Utils.noNulo(getRfc()), Utils.noNulo(getRazonSocial()), Utils.noNulo(getFolio()), Utils.noNulo(getSerie()), Utils.noNulo(fechaInicial), Utils.noNulo(getUuid()), Utils.noNulo(fechaFinal));
-		  	// ===== Detalle (Nómina) =====
 		  		int pageSize = (getLength() > 0 ? getLength() : 20);
+
+		  		// ===== Detalle (Nómina) ACTUALIZADO =====
 		  		ArrayList<BovedaNominaForm> listaDetalle = bovedaBean.detalleBoveda(
 		  		    con,
 		  		    session.getEsquemaEmpresa(),
@@ -119,15 +119,20 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 		  		    Utils.noNulo(dateOperator),
 		  		    Utils.noNulo(getDateV1()),
 		  		    Utils.noNulo(getDateV2()),
-		  		    // numéricos
+		  		    // numéricos existentes
 		  		    Utils.noNulo(getFolioOperator()),  Utils.noNulo(getFolioV1()),  Utils.noNulo(getFolioV2()),
 		  		    Utils.noNulo(getTotalOperator()),  Utils.noNulo(getTotalV1()),  Utils.noNulo(getTotalV2()),
 		  		    Utils.noNulo(getSubOperator()),    Utils.noNulo(getSubV1()),    Utils.noNulo(getSubV2()),
 		  		    Utils.noNulo(getDescOperator()),   Utils.noNulo(getDescV1()),   Utils.noNulo(getDescV2()),
 		  		    Utils.noNulo(getPercOperator()),   Utils.noNulo(getPercV1()),   Utils.noNulo(getPercV2()),
-		  		    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2())
+		  		    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2()),
+		  		    // === NUEVOS FILTROS AGREGADOS AQUÍ ===
+		  		    Utils.noNulo(getExentasOperator()), Utils.noNulo(getExentasV1()), Utils.noNulo(getExentasV2()),
+		  		    Utils.noNulo(getGravadasOperator()),Utils.noNulo(getGravadasV1()),Utils.noNulo(getGravadasV2()),
+		  		    Utils.noNulo(getOtrosOperator()),   Utils.noNulo(getOtrosV1()),   Utils.noNulo(getOtrosV2())
 		  		);
-		  	// ===== Total de registros (Nómina) =====
+
+		  		// ===== Total de registros (Nómina) ACTUALIZADO =====
 		  		int totalRegistro = bovedaBean.totalRegistros(
 		  		    con,
 		  		    session.getEsquemaEmpresa(),
@@ -147,13 +152,17 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 		  		    Utils.noNulo(dateOperator),
 		  		    Utils.noNulo(getDateV1()),
 		  		    Utils.noNulo(getDateV2()),
-		  		    // numéricos
+		  		    // numéricos existentes
 		  		    Utils.noNulo(getFolioOperator()),  Utils.noNulo(getFolioV1()),  Utils.noNulo(getFolioV2()),
 		  		    Utils.noNulo(getTotalOperator()),  Utils.noNulo(getTotalV1()),  Utils.noNulo(getTotalV2()),
 		  		    Utils.noNulo(getSubOperator()),    Utils.noNulo(getSubV1()),    Utils.noNulo(getSubV2()),
 		  		    Utils.noNulo(getDescOperator()),   Utils.noNulo(getDescV1()),   Utils.noNulo(getDescV2()),
 		  		    Utils.noNulo(getPercOperator()),   Utils.noNulo(getPercV1()),   Utils.noNulo(getPercV2()),
-		  		    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2())
+		  		    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2()),
+		  		    // === NUEVOS FILTROS AGREGADOS AQUÍ ===
+		  		    Utils.noNulo(getExentasOperator()), Utils.noNulo(getExentasV1()), Utils.noNulo(getExentasV2()),
+		  		    Utils.noNulo(getGravadasOperator()),Utils.noNulo(getGravadasV1()),Utils.noNulo(getGravadasV2()),
+		  		    Utils.noNulo(getOtrosOperator()),   Utils.noNulo(getOtrosV1()),   Utils.noNulo(getOtrosV2())
 		  		);
 
 
@@ -166,10 +175,8 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 				out.print(json);
 	            out.flush();
 	            out.close();
-	          //  logger.info("json==>"+json);
 			}
 			
-            
 		}catch(Exception e){
 			Utils.imprimeLog("", e);
 		}finally{
@@ -586,7 +593,7 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 					    Utils.noNulo(fechaInicial),
 					    Utils.noNulo(getUuid()),
 					    Utils.noNulo(fechaFinal),
-					    Utils.noNulo(idRegistro),             // uuids seleccionados separados por ";"
+					    Utils.noNulo(idRegistro), // uuids seleccionados separados por ";"
 
 					    // ==== Operadores texto ====
 					    Utils.noNulo(getRfcOperator()),
@@ -605,7 +612,12 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 					    Utils.noNulo(getSubOperator()),    Utils.noNulo(getSubV1()),    Utils.noNulo(getSubV2()),
 					    Utils.noNulo(getDescOperator()),   Utils.noNulo(getDescV1()),   Utils.noNulo(getDescV2()),
 					    Utils.noNulo(getPercOperator()),   Utils.noNulo(getPercV1()),   Utils.noNulo(getPercV2()),
-					    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2())
+					    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2()),
+
+					    // ==== NUEVOS FILTROS AGREGADOS ====
+					    Utils.noNulo(getExentasOperator()), Utils.noNulo(getExentasV1()), Utils.noNulo(getExentasV2()),
+					    Utils.noNulo(getGravadasOperator()), Utils.noNulo(getGravadasV1()), Utils.noNulo(getGravadasV2()),
+					    Utils.noNulo(getOtrosOperator()),   Utils.noNulo(getOtrosV1()),   Utils.noNulo(getOtrosV2())
 					);
 				
 
@@ -1023,7 +1035,12 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 		  			    Utils.noNulo(getSubOperator()),    Utils.noNulo(getSubV1()),    Utils.noNulo(getSubV2()),
 		  			    Utils.noNulo(getDescOperator()),   Utils.noNulo(getDescV1()),   Utils.noNulo(getDescV2()),
 		  			    Utils.noNulo(getPercOperator()),   Utils.noNulo(getPercV1()),   Utils.noNulo(getPercV2()),
-		  			    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2())
+		  			    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2()),
+
+		  			    // ==== NUEVOS FILTROS (Exentas, Gravadas, Otros) ====
+		  			    Utils.noNulo(getExentasOperator()), Utils.noNulo(getExentasV1()), Utils.noNulo(getExentasV2()),
+		  			    Utils.noNulo(getGravadasOperator()), Utils.noNulo(getGravadasV1()), Utils.noNulo(getGravadasV2()),
+		  			    Utils.noNulo(getOtrosOperator()),   Utils.noNulo(getOtrosV1()),   Utils.noNulo(getOtrosV2())
 		  			);
 
 				bandLogo = ConfigAdicionalesBean.obtenerValorVariable(con, rc.getEsquema(), "BANDERA_LOGO_TOYOTA");
@@ -1110,40 +1127,44 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 		  		}
 		  		dateOperator = "bt";
 			  //ArrayList<BovedaNominaForm> datosBoveda  = bovedaBean.detalleBoveda(con, rc.getEsquema(), Utils.noNulo(getRfc()), Utils.noNulo(getRazonSocial()), Utils.noNulo(getFolio()), Utils.noNulo(getSerie()), Utils.noNulo(getFechaInicial()), Utils.noNulo(getUuid()), Utils.noNulo(getFechaFinal()), getStart(), 20, true);
-			  ArrayList<BovedaNominaForm> datosBoveda = bovedaBean.detalleBoveda(
-					    con,
-					    rc.getEsquema(),
-					    Utils.noNulo(getRfc()),
-					    Utils.noNulo(getRazonSocial()),
-					    Utils.noNulo(getFolio()),
-					    Utils.noNulo(getSerie()),
-					    Utils.noNulo(fechaInicial),
-					    Utils.noNulo(getUuid()),
-					    Utils.noNulo(fechaFinal),
-					    getStart(),
-					    20,
-					    true, // isExcel
+		  		ArrayList<BovedaNominaForm> datosBoveda = bovedaBean.detalleBoveda(
+		  			    con,
+		  			    rc.getEsquema(),
+		  			    Utils.noNulo(getRfc()),
+		  			    Utils.noNulo(getRazonSocial()),
+		  			    Utils.noNulo(getFolio()),
+		  			    Utils.noNulo(getSerie()),
+		  			    Utils.noNulo(fechaInicial),
+		  			    Utils.noNulo(getUuid()),
+		  			    Utils.noNulo(fechaFinal),
+		  			    getStart(),
+		  			    20,
+		  			    true, // isExcel
 
-					    // ==== Operadores de texto ====
-					    Utils.noNulo(getRfcOperator()),
-					    Utils.noNulo(getRazonOperator()),
-					    Utils.noNulo(getSerieOperator()),
-					    Utils.noNulo(getUuidOperator()),
+		  			    // ==== Operadores de texto ====
+		  			    Utils.noNulo(getRfcOperator()),
+		  			    Utils.noNulo(getRazonOperator()),
+		  			    Utils.noNulo(getSerieOperator()),
+		  			    Utils.noNulo(getUuidOperator()),
 
-					    // ==== Fecha ====
-					    Utils.noNulo(dateOperator),
-					    Utils.noNulo(getDateV1()),
-					    Utils.noNulo(getDateV2()),
+		  			    // ==== Fecha ====
+		  			    Utils.noNulo(dateOperator),
+		  			    Utils.noNulo(getDateV1()),
+		  			    Utils.noNulo(getDateV2()),
 
-					    // ==== Numéricos ====
-					    Utils.noNulo(getFolioOperator()),  Utils.noNulo(getFolioV1()),  Utils.noNulo(getFolioV2()),
-					    Utils.noNulo(getTotalOperator()),  Utils.noNulo(getTotalV1()),  Utils.noNulo(getTotalV2()),
-					    Utils.noNulo(getSubOperator()),    Utils.noNulo(getSubV1()),    Utils.noNulo(getSubV2()),
-					    Utils.noNulo(getDescOperator()),   Utils.noNulo(getDescV1()),   Utils.noNulo(getDescV2()),
-					    Utils.noNulo(getPercOperator()),   Utils.noNulo(getPercV1()),   Utils.noNulo(getPercV2()),
-					    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2())
-					);
+		  			    // ==== Numéricos ====
+		  			    Utils.noNulo(getFolioOperator()),  Utils.noNulo(getFolioV1()),  Utils.noNulo(getFolioV2()),
+		  			    Utils.noNulo(getTotalOperator()),  Utils.noNulo(getTotalV1()),  Utils.noNulo(getTotalV2()),
+		  			    Utils.noNulo(getSubOperator()),    Utils.noNulo(getSubV1()),    Utils.noNulo(getSubV2()),
+		  			    Utils.noNulo(getDescOperator()),   Utils.noNulo(getDescV1()),   Utils.noNulo(getDescV2()),
+		  			    Utils.noNulo(getPercOperator()),   Utils.noNulo(getPercV1()),   Utils.noNulo(getPercV2()),
+		  			    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2()),
 
+		  			    // ==== NUEVOS FILTROS (Exentas, Gravadas, Otros) ====
+		  			    Utils.noNulo(getExentasOperator()), Utils.noNulo(getExentasV1()), Utils.noNulo(getExentasV2()),
+		  			    Utils.noNulo(getGravadasOperator()), Utils.noNulo(getGravadasV1()), Utils.noNulo(getGravadasV2()),
+		  			    Utils.noNulo(getOtrosOperator()),   Utils.noNulo(getOtrosV1()),   Utils.noNulo(getOtrosV2())
+		  			);
 			  ConvierteEXCEL convExcel = new ConvierteEXCEL();
 			int REG_NUEVA_PAGINA = 1000000;
 	  		if (datosBoveda.size() >= REG_NUEVA_PAGINA) {
@@ -1210,39 +1231,44 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	  		}
 	  		dateOperator = "bt";
 		 // ArrayList<BovedaNominaForm> datosBoveda  = bovedaBean.detalleBoveda(con, rc.getEsquema(), Utils.noNulo(getRfc()), Utils.noNulo(getRazonSocial()), Utils.noNulo(getFolio()), Utils.noNulo(getSerie()), Utils.noNulo(getFechaInicial()), Utils.noNulo(getUuid()), Utils.noNulo(getFechaFinal()), getStart(), 20, true);
-		  ArrayList<BovedaNominaForm> datosBoveda = bovedaBean.detalleBoveda(
-				    con,
-				    rc.getEsquema(),
-				    Utils.noNulo(getRfc()),
-				    Utils.noNulo(getRazonSocial()),
-				    Utils.noNulo(getFolio()),
-				    Utils.noNulo(getSerie()),
-				    Utils.noNulo(fechaInicial),
-				    Utils.noNulo(getUuid()),
-				    Utils.noNulo(fechaFinal),
-				    getStart(),
-				    20,
-				    true, // isExcel
+	  		ArrayList<BovedaNominaForm> datosBoveda = bovedaBean.detalleBoveda(
+	  			    con,
+	  			    rc.getEsquema(),
+	  			    Utils.noNulo(getRfc()),
+	  			    Utils.noNulo(getRazonSocial()),
+	  			    Utils.noNulo(getFolio()),
+	  			    Utils.noNulo(getSerie()),
+	  			    Utils.noNulo(fechaInicial),
+	  			    Utils.noNulo(getUuid()),
+	  			    Utils.noNulo(fechaFinal),
+	  			    getStart(),
+	  			    20,
+	  			    true, // isExcel
 
-				    // ==== Operadores de texto ====
-				    Utils.noNulo(getRfcOperator()),
-				    Utils.noNulo(getRazonOperator()),
-				    Utils.noNulo(getSerieOperator()),
-				    Utils.noNulo(getUuidOperator()),
+	  			    // ==== Operadores de texto ====
+	  			    Utils.noNulo(getRfcOperator()),
+	  			    Utils.noNulo(getRazonOperator()),
+	  			    Utils.noNulo(getSerieOperator()),
+	  			    Utils.noNulo(getUuidOperator()),
 
-				    // ==== Fecha ====
-				    Utils.noNulo(dateOperator),
-				    Utils.noNulo(getDateV1()),
-				    Utils.noNulo(getDateV2()),
+	  			    // ==== Fecha ====
+	  			    Utils.noNulo(dateOperator),
+	  			    Utils.noNulo(getDateV1()),
+	  			    Utils.noNulo(getDateV2()),
 
-				    // ==== Numéricos ====
-				    Utils.noNulo(getFolioOperator()),  Utils.noNulo(getFolioV1()),  Utils.noNulo(getFolioV2()),
-				    Utils.noNulo(getTotalOperator()),  Utils.noNulo(getTotalV1()),  Utils.noNulo(getTotalV2()),
-				    Utils.noNulo(getSubOperator()),    Utils.noNulo(getSubV1()),    Utils.noNulo(getSubV2()),
-				    Utils.noNulo(getDescOperator()),   Utils.noNulo(getDescV1()),   Utils.noNulo(getDescV2()),
-				    Utils.noNulo(getPercOperator()),   Utils.noNulo(getPercV1()),   Utils.noNulo(getPercV2()),
-				    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2())
-				);
+	  			    // ==== Numéricos ====
+	  			    Utils.noNulo(getFolioOperator()),  Utils.noNulo(getFolioV1()),  Utils.noNulo(getFolioV2()),
+	  			    Utils.noNulo(getTotalOperator()),  Utils.noNulo(getTotalV1()),  Utils.noNulo(getTotalV2()),
+	  			    Utils.noNulo(getSubOperator()),    Utils.noNulo(getSubV1()),    Utils.noNulo(getSubV2()),
+	  			    Utils.noNulo(getDescOperator()),   Utils.noNulo(getDescV1()),   Utils.noNulo(getDescV2()),
+	  			    Utils.noNulo(getPercOperator()),   Utils.noNulo(getPercV1()),   Utils.noNulo(getPercV2()),
+	  			    Utils.noNulo(getDedOperator()),    Utils.noNulo(getDedV1()),    Utils.noNulo(getDedV2()),
+
+	  			    // ==== NUEVOS FILTROS (Exentas, Gravadas, Otros) ====
+	  			    Utils.noNulo(getExentasOperator()), Utils.noNulo(getExentasV1()), Utils.noNulo(getExentasV2()),
+	  			    Utils.noNulo(getGravadasOperator()), Utils.noNulo(getGravadasV1()), Utils.noNulo(getGravadasV2()),
+	  			    Utils.noNulo(getOtrosOperator()),   Utils.noNulo(getOtrosV1()),   Utils.noNulo(getOtrosV2())
+	  			);
 
 		  try {
 			  ConvierteEXCEL convExcel = new ConvierteEXCEL();
@@ -1282,8 +1308,11 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	public String reporteDetalle() {
 
 	    XSSFWorkbook myWorkBook = null;
-	    Connection con = null, conSAT = null;
-	    ResultadoConexion rc = null, rcSAT = null;
+	    Connection con = null;
+	    ResultadoConexion rc = null;
+	    
+	    Connection conSAT = null;
+	    ResultadoConexion rcSAT = null;
 
 	    BovedaNominaBean bovedaBean = new BovedaNominaBean();
 	    HttpServletResponse response = ServletActionContext.getResponse();
@@ -1297,74 +1326,89 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 
 	        rc = getConnection(session.getEsquemaEmpresa());
 	        con = rc.getCon();
-	         String fechaInicial = Utils.noNulo(getOrReq(request, "fechaInicial"));
-		     String fechaFinal   = Utils.noNulo(getOrReq(request, "fechaFinal"));
-		        
-		      String dateOperator    = Utils.noNulo(getOrReq(request, "dateOperator"));
-	  		if ("".equalsIgnoreCase(fechaInicial)) {
-	  			 fechaFinal = UtilsFechas.getFechayyyyMMdd();
-	  			 fechaInicial= UtilsFechas.restarDiasFecha(fechaFinal, 365);
-	  			dateOperator = "bt";
-	  		}else {
-	  			dateOperator = getDateOperator();
-	  		}
-	  		dateOperator = "bt";
+	        
+	        // Logica de fechas
+	        String fechaInicial = Utils.noNulo(request.getParameter("fechaInicial"));
+	        String fechaFinal   = Utils.noNulo(request.getParameter("fechaFinal"));
+	        String dateOperator = nz(request.getParameter("dateOperator")); // Usar nz o Utils.noNulo
+
+	        if ("".equalsIgnoreCase(fechaInicial)) {
+	             fechaFinal = UtilsFechas.getFechayyyyMMdd();
+	             fechaInicial = UtilsFechas.restarDiasFecha(fechaFinal, 365);
+	             dateOperator = "bt";
+	        } else {
+	             // Si tienes el metodo getDateOperator() usalo, si no, valida null
+	             // dateOperator = getDateOperator(); 
+	        }
+	        dateOperator = "bt"; // Forzado segun tu logica
+
 	        // ====== LECTURA DE PARÁMETROS (básicos + DX-like) ======
-	        String rfc          = Utils.noNulo(getOrReq(request, "rfc"));
-	        String razonSocial  = Utils.noNulo(getOrReq(request, "razonSocial"));
-	        String folio        = Utils.noNulo(getOrReq(request, "folio"));
-	        String serie        = Utils.noNulo(getOrReq(request, "serie"));
-	      //  String fechaInicial = Utils.noNulo(getOrReq(request, "fechaInicial"));
-	      //  String fechaFinal   = Utils.noNulo(getOrReq(request, "fechaFinal"));
-	        String uuidBoveda   = Utils.noNulo(getOrReq(request, "uuid"));
+	        String rfc          = Utils.noNulo(request.getParameter("rfc"));
+	        String razonSocial  = Utils.noNulo(request.getParameter("razonSocial"));
+	        String folio        = Utils.noNulo(request.getParameter("folio"));
+	        String serie        = Utils.noNulo(request.getParameter("serie"));
+	        String uuidBoveda   = Utils.noNulo(request.getParameter("uuid"));
 
 	        // Selección de filas (UUIDs concatenados con ';')
-	        String idRegistro   = Utils.noNulo(getOrReq(request, "idRegistro"));
+	        String idRegistro   = Utils.noNulo(request.getParameter("idRegistro"));
 
 	        // Operadores/valores TEXTO
-	        String rfcOperator     = Utils.noNulo(getOrReq(request, "rfcOperator"));
-	        String razonOperator   = Utils.noNulo(getOrReq(request, "razonOperator"));
-	        String serieOperator   = Utils.noNulo(getOrReq(request, "serieOperator"));
-	        String uuidOperator    = Utils.noNulo(getOrReq(request, "uuidOperator"));
+	        String rfcOperator     = nz(request.getParameter("rfcOperator"));
+	        String razonOperator   = nz(request.getParameter("razonOperator"));
+	        String serieOperator   = nz(request.getParameter("serieOperator"));
+	        String uuidOperator    = nz(request.getParameter("uuidOperator"));
 
 	        // FECHA
-	      //  String dateOperator    = Utils.noNulo(getOrReq(request, "dateOperator"));
-	        String dateV1          = Utils.noNulo(getOrReq(request, "dateV1"));
-	        String dateV2          = Utils.noNulo(getOrReq(request, "dateV2"));
+	        String dateV1          = nz(request.getParameter("dateV1"));
+	        String dateV2          = nz(request.getParameter("dateV2"));
 
 	        // NUMÉRICOS
-	        String folioOperator   = Utils.noNulo(getOrReq(request, "folioOperator"));
-	        String folioV1         = Utils.noNulo(getOrReq(request, "folioV1"));
-	        String folioV2         = Utils.noNulo(getOrReq(request, "folioV2"));
+	        String folioOperator   = nz(request.getParameter("folioOperator"));
+	        String folioV1         = nz(request.getParameter("folioV1"));
+	        String folioV2         = nz(request.getParameter("folioV2"));
 
-	        String totalOperator   = Utils.noNulo(getOrReq(request, "totalOperator"));
-	        String totalV1         = Utils.noNulo(getOrReq(request, "totalV1"));
-	        String totalV2         = Utils.noNulo(getOrReq(request, "totalV2"));
+	        String totalOperator   = nz(request.getParameter("totalOperator"));
+	        String totalV1         = nz(request.getParameter("totalV1"));
+	        String totalV2         = nz(request.getParameter("totalV2"));
 
-	        String subOperator     = Utils.noNulo(getOrReq(request, "subOperator"));
-	        String subV1           = Utils.noNulo(getOrReq(request, "subV1"));
-	        String subV2           = Utils.noNulo(getOrReq(request, "subV2"));
+	        String subOperator     = nz(request.getParameter("subOperator"));
+	        String subV1           = nz(request.getParameter("subV1"));
+	        String subV2           = nz(request.getParameter("subV2"));
 
-	        String descOperator    = Utils.noNulo(getOrReq(request, "descOperator"));
-	        String descV1          = Utils.noNulo(getOrReq(request, "descV1"));
-	        String descV2          = Utils.noNulo(getOrReq(request, "descV2"));
+	        String descOperator    = nz(request.getParameter("descOperator"));
+	        String descV1          = nz(request.getParameter("descV1"));
+	        String descV2          = nz(request.getParameter("descV2"));
 
-	        String percOperator    = Utils.noNulo(getOrReq(request, "percOperator"));
-	        String percV1          = Utils.noNulo(getOrReq(request, "percV1"));
-	        String percV2          = Utils.noNulo(getOrReq(request, "percV2"));
+	        String percOperator    = nz(request.getParameter("percOperator"));
+	        String percV1          = nz(request.getParameter("percV1"));
+	        String percV2          = nz(request.getParameter("percV2"));
 
-	        String dedOperator     = Utils.noNulo(getOrReq(request, "dedOperator"));
-	        String dedV1           = Utils.noNulo(getOrReq(request, "dedV1"));
-	        String dedV2           = Utils.noNulo(getOrReq(request, "dedV2"));
+	        String dedOperator     = nz(request.getParameter("dedOperator"));
+	        String dedV1           = nz(request.getParameter("dedV1"));
+	        String dedV2           = nz(request.getParameter("dedV2"));
 
-	        // ====== Ejecuta consulta DETALLE con filtros completos (sin paginar para Excel) ======
+	        // ====== NUEVOS FILTROS ======
+	        String exentasOperator = nz(request.getParameter("exentasOperator"));
+	        String exentasV1       = nz(request.getParameter("exentasV1"));
+	        String exentasV2       = nz(request.getParameter("exentasV2"));
+
+	        String gravadasOperator = nz(request.getParameter("gravadasOperator"));
+	        String gravadasV1       = nz(request.getParameter("gravadasV1"));
+	        String gravadasV2       = nz(request.getParameter("gravadasV2"));
+
+	        String otrosOperator    = nz(request.getParameter("otrosOperator"));
+	        String otrosV1          = nz(request.getParameter("otrosV1"));
+	        String otrosV2          = nz(request.getParameter("otrosV2"));
+
+
+	        // ====== Ejecuta consulta DETALLE con filtros completos ======
 	        ArrayList<BovedaNominaForm> datosBoveda = bovedaBean.reporteDetalleXML(
 	                con, rc.getEsquema(),
 	                rfc, razonSocial, folio, serie,
 	                fechaInicial, uuidBoveda, fechaFinal,
 	                /* selección de UUIDs */ idRegistro,
 	                /* paginación y bandera excel */ 0, 0, true,
-	                // ----- operadores/valores -----
+	                // ----- operadores/valores existentes -----
 	                rfcOperator,   razonOperator, serieOperator, uuidOperator,
 	                dateOperator,  dateV1,        dateV2,
 	                folioOperator, folioV1,       folioV2,
@@ -1372,7 +1416,11 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	                subOperator,   subV1,         subV2,
 	                descOperator,  descV1,        descV2,
 	                percOperator,  percV1,        percV2,
-	                dedOperator,   dedV1,         dedV2
+	                dedOperator,   dedV1,         dedV2,
+	                // ----- NUEVOS FILTROS -----
+	                exentasOperator, exentasV1, exentasV2,
+	                gravadasOperator, gravadasV1, gravadasV2,
+	                otrosOperator,   otrosV1,   otrosV2
 	        );
 
 	        // ====== Excel ======
@@ -1380,6 +1428,7 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	        conSAT = rcSAT.getCon();
 
 	        ConvierteEXCEL convExcel = new ConvierteEXCEL();
+	        // NOTA: Aquí es donde fallaba porque datosBoveda traía objetos con tipo=null
 	        myWorkBook = convExcel.toExcelNominaDetalleXML(conSAT, con, rc.getEsquema(), datosBoveda);
 
 	        ByteArrayOutputStream boas = new ByteArrayOutputStream();
@@ -1397,6 +1446,8 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	    }
 	    return SUCCESS;
 	}
+
+	
 
 	/** Helper: usa el getter si existe; si no, toma de request */
 	private String getOrReq(HttpServletRequest req, String name){
@@ -1436,14 +1487,14 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	        String fechaInicial = Utils.noNulo(request.getParameter("fechaInicial"));
 	        String fechaFinal   = Utils.noNulo(request.getParameter("fechaFinal"));
 	        String dateOperator   = nz(request.getParameter("dateOperator"));
-	  		if ("".equalsIgnoreCase(fechaInicial)) {
-	  			 fechaFinal = UtilsFechas.getFechayyyyMMdd();
-	  			 fechaInicial= UtilsFechas.restarDiasFecha(fechaFinal, 365);
-	  			dateOperator = "bt";
-	  		}else {
-	  			dateOperator = getDateOperator();
-	  		}
-	  		dateOperator = "bt";
+	        if ("".equalsIgnoreCase(fechaInicial)) {
+	             fechaFinal = UtilsFechas.getFechayyyyMMdd();
+	             fechaInicial= UtilsFechas.restarDiasFecha(fechaFinal, 365);
+	            dateOperator = "bt";
+	        }else {
+	            dateOperator = getDateOperator();
+	        }
+	        dateOperator = "bt"; // Forzado según tu código original
 	        rcSAT = getConnectionSAT();
 	        conSAT = rcSAT.getCon();
 
@@ -1452,9 +1503,7 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	        String razonSocial  = Utils.noNulo(request.getParameter("razonSocial"));
 	        String folio        = Utils.noNulo(request.getParameter("folio"));
 	        String serie        = Utils.noNulo(request.getParameter("serie"));
-	       // String fechaInicial = Utils.noNulo(request.getParameter("fechaInicial"));
 	        String uuid         = Utils.noNulo(request.getParameter("uuid"));
-	      //  String fechaFinal   = Utils.noNulo(request.getParameter("fechaFinal"));
 
 	        // ===== Operadores/valores DX-like =====
 	        String rfcOperator    = nz(request.getParameter("rfcOperator"));
@@ -1462,10 +1511,11 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	        String serieOperator  = nz(request.getParameter("serieOperator"));
 	        String uuidOperator   = nz(request.getParameter("uuidOperator"));
 
-	        //String dateOperator   = nz(request.getParameter("dateOperator"));
+	        // Fechas
 	        String dateV1         = nz(request.getParameter("dateV1"));
 	        String dateV2         = nz(request.getParameter("dateV2"));
 
+	        // Numéricos existentes
 	        String folioOperator  = nz(request.getParameter("folioOperator"));
 	        String folioV1        = nz(request.getParameter("folioV1"));
 	        String folioV2        = nz(request.getParameter("folioV2"));
@@ -1490,10 +1540,24 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	        String dedV1          = nz(request.getParameter("dedV1"));
 	        String dedV2          = nz(request.getParameter("dedV2"));
 
+	        // ===== NUEVOS FILTROS (Lectura del Request) =====
+	        String exentasOperator = nz(request.getParameter("exentasOperator"));
+	        String exentasV1       = nz(request.getParameter("exentasV1"));
+	        String exentasV2       = nz(request.getParameter("exentasV2"));
+
+	        String gravadasOperator = nz(request.getParameter("gravadasOperator"));
+	        String gravadasV1       = nz(request.getParameter("gravadasV1"));
+	        String gravadasV2       = nz(request.getParameter("gravadasV2"));
+
+	        String otrosOperator    = nz(request.getParameter("otrosOperator"));
+	        String otrosV1          = nz(request.getParameter("otrosV1"));
+	        String otrosV2          = nz(request.getParameter("otrosV2"));
+
+
 	        // ===== Datos para Excel con filtros DX-like =====
 	        ArrayList<ReporteNominaForm> datosReporte = reporteNominaBean.detalleReporteNomina(
 	            con, rc.getEsquema(),
-	            // texto/fecha legado (valor libre)
+	            // texto/fecha legado
 	            rfc, razonSocial, folio, serie, fechaInicial, uuid, fechaFinal,
 	            // operadores/valores DX-like
 	            rfcOperator, razonOperator, serieOperator, uuidOperator,
@@ -1503,7 +1567,11 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	            subOperator,   subV1,   subV2,
 	            descOperator,  descV1,  descV2,
 	            percOperator,  percV1,  percV2,
-	            dedOperator,   dedV1,   dedV2
+	            dedOperator,   dedV1,   dedV2,
+	            // ==== NUEVOS FILTROS ====
+	            exentasOperator, exentasV1, exentasV2,
+	            gravadasOperator, gravadasV1, gravadasV2,
+	            otrosOperator,   otrosV1,   otrosV2
 	        );
 
 	        ArrayList<String> listaPercepciones = reporteNominaBean.percepcionesReporte(con, rc.getEsquema());

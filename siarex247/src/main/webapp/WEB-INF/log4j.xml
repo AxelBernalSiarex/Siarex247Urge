@@ -21,6 +21,6 @@
     <root>
 		<!--Los posibles valoresde priority son : DEBUG, INFO, WARN, ERROR, FATAL-->
 		<priority value ="info" /> 
-		<appender-ref ref="LOGFILE"/>
+		<appender-ref ref="CONSOLA"/>
 	</root>
 </log4j:configuration>

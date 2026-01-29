@@ -58,6 +58,45 @@ public class BovedaNominaSupport extends ActionDB{
     private String modoAgrupar;
     private String validarSAT;
     
+	private double totalOtrosDouble;
+
+	private String totalExcento;
+	private double totalExcentoDouble;
+
+	private String totalGravado;
+	private double totalGravadoDouble;
+	
+	// ==========================================
+    //  NUEVAS VARIABLES (Agregar al inicio de la clase)
+    // ==========================================
+    private String exentasOperator, exentasV1, exentasV2;
+    private String gravadasOperator, gravadasV1, gravadasV2;
+    private String otrosOperator, otrosV1, otrosV2;
+
+    // ==========================================
+    //  GETTERS Y SETTERS (Agregar al final de la clase)
+    // ==========================================
+    public String getExentasOperator() { return exentasOperator; }
+    @StrutsParameter public void setExentasOperator(String exentasOperator) { this.exentasOperator = exentasOperator; }
+    public String getExentasV1() { return exentasV1; }
+    @StrutsParameter  public void setExentasV1(String exentasV1) { this.exentasV1 = exentasV1; }
+    public String getExentasV2() { return exentasV2; }
+    @StrutsParameter public void setExentasV2(String exentasV2) { this.exentasV2 = exentasV2; }
+
+    public String getGravadasOperator() { return gravadasOperator; }
+    @StrutsParameter  public void setGravadasOperator(String gravadasOperator) { this.gravadasOperator = gravadasOperator; }
+    public String getGravadasV1() { return gravadasV1; }
+    @StrutsParameter  public void setGravadasV1(String gravadasV1) { this.gravadasV1 = gravadasV1; }
+    public String getGravadasV2() { return gravadasV2; }
+    @StrutsParameter  public void setGravadasV2(String gravadasV2) { this.gravadasV2 = gravadasV2; }
+
+    public String getOtrosOperator() { return otrosOperator; }
+    @StrutsParameter public void setOtrosOperator(String otrosOperator) { this.otrosOperator = otrosOperator; }
+    public String getOtrosV1() { return otrosV1; }
+    @StrutsParameter public void setOtrosV1(String otrosV1) { this.otrosV1 = otrosV1; }
+    public String getOtrosV2() { return otrosV2; }
+    @StrutsParameter   public void setOtrosV2(String otrosV2) { this.otrosV2 = otrosV2; }
+    
     
 	public String getRfc() {
 		return rfc;

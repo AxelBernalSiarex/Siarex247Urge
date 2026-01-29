@@ -238,277 +238,313 @@
         </div>
 	</div>
  </div>	
+ 
+ <div class="card-body bg-light pt-0" style="padding-top: 10px !important; " >
+    <div class="tab-content" style="overflow: auto;">
+        <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-a6fa4703-a0a5-453f-a182-a8e9ae0a9282" id="dom-a6fa4703-a0a5-453f-a182-a8e9ae0a9282">
+            <div id="overSeccion_Boveda_Nomina" class="overlay" style="display: none;text-align: right;">
+                <img src="/siarex247/img/loading.gif" style="width: 30px; height: 30px;"> Procesando...
+            </div>
+            
+            <input type="hidden" id="rfcOperatorN"   value="contains" />
+            <input type="hidden" id="razonOperatorN" value="contains" />
+            <input type="hidden" id="serieOperatorN" value="contains" />
+            <input type="hidden" id="uuidOperatorN"  value="contains" />
+            
+            <input type="hidden" id="folioOperatorN" value="eq" />
+            <input type="hidden" id="totalOperatorN" value="eq" />
+            <input type="hidden" id="subOperatorN"   value="eq" />
+            <input type="hidden" id="descOperatorN"  value="eq" />
+            <input type="hidden" id="percOperatorN"  value="eq" />
+            <input type="hidden" id="dedOperatorN"   value="eq" />
+            
+            <input type="hidden" id="exentasOperatorN" value="eq" />
+            <input type="hidden" id="gravadasOperatorN" value="eq" />
+            <input type="hidden" id="otrosOperatorN"   value="eq" />
+            
+            <input type="hidden" id="dateOperatorN"  value="eq" />
+
+            <table id="tablaDetalleNomina"class="table mb-0 data-table fs--1">
+                <thead class="bg-200 text-900">
+                    
+                <tr>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ15">Acciones</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ16">RFC Receptor</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ17">Raz&oacute;n Social Receptor</th>
+
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ21">Sub-Total</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ33">Exentas ISR</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ34">Gravadas ISR</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ35">Otros Pagos</th>
+
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ22">Total Total</th>
+
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ20">Total</th>
+
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ25">XML</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ26">PDF</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ27">UUID</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ28">Fecha Factura</th>
+
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ23" style="display:none;">Total Percepciones</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ24" style="display:none;">Total Deducciones</th>
+                </tr>
+
+
+                <tr class="filters">
+                    <th>
+                        <div style="display:none;">
+                            <span class="op-btn" id="folioOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="1" id="folioFilter1N" placeholder="Folio..." />
+                            <input type="number" step="1" id="folioFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="folioOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">≠ No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">≤ Menor o igual</li>
+                                    <li data-op="ge">≥ Mayor o igual</li>
+                                    <li data-op="between">↔ Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="rfcOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
+                            <input type="text" id="rfcFilterInputN" placeholder="Filtrar RFC..." />
+                            <div class="dx-like-menu" id="rfcOpMenuN">
+                                <ul>
+                                    <li data-op="contains">⊚ Contiene</li>
+                                    <li data-op="notContains">⊘ No contiene</li>
+                                    <li data-op="startsWith">&#8676; Empieza con</li>
+                                    <li data-op="endsWith">&#8677; Termina con</li>
+                                    <li data-op="equals">= Igual</li>
+                                    <li data-op="notEquals">&ne; Distinto</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="razonOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
+                            <input type="text" id="razonFilterInputN" placeholder="Filtrar razón social..." />
+                            <div class="dx-like-menu" id="razonOpMenuN">
+                                <ul>
+                                    <li data-op="contains">⊚ Contiene</li>
+                                    <li data-op="notContains">⊘ No contiene</li>
+                                    <li data-op="startsWith">&#8676; Empieza con</li>
+                                    <li data-op="endsWith">&#8677; Termina con</li>
+                                    <li data-op="equals">= Igual</li>
+                                    <li data-op="notEquals">&ne; Distinto</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="subOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="any" id="subFilter1N" placeholder="Sub-total..." />
+                            <input type="number" step="any" id="subFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="subOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">&ne; No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">&le; Menor o igual</li>
+                                    <li data-op="ge">&ge; Mayor o igual</li>
+                                    <li data-op="between">&#8596; Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="exentasOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="any" id="exentasFilter1N" placeholder="Exentas..." />
+                            <input type="number" step="any" id="exentasFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="exentasOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">&ne; No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">&le; Menor o igual</li>
+                                    <li data-op="ge">&ge; Mayor o igual</li>
+                                    <li data-op="between">&#8596; Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="gravadasOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="any" id="gravadasFilter1N" placeholder="Gravadas..." />
+                            <input type="number" step="any" id="gravadasFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="gravadasOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">&ne; No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">&le; Menor o igual</li>
+                                    <li data-op="ge">&ge; Mayor o igual</li>
+                                    <li data-op="between">&#8596; Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="otrosOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="any" id="otrosFilter1N" placeholder="Otros..." />
+                            <input type="number" step="any" id="otrosFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="otrosOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">&ne; No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">&le; Menor o igual</li>
+                                    <li data-op="ge">&ge; Mayor o igual</li>
+                                    <li data-op="between">&#8596; Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="descOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="any" id="descFilter1N" placeholder="Descuento..." />
+                            <input type="number" step="any" id="descFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="descOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">&ne; No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">&le; Menor o igual</li>
+                                    <li data-op="ge">&ge; Mayor o igual</li>
+                                    <li data-op="between">&#8596; Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="totalOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="any" id="totalFilter1N" placeholder="Neto..." />
+                            <input type="number" step="any" id="totalFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="totalOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">&ne; No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">&le; Menor o igual</li>
+                                    <li data-op="ge">&ge; Mayor o igual</li>
+                                    <li data-op="between">&#8596; Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th></th>
+
+                    <th></th>
+
+                    <th>
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="uuidOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
+                            <input type="text" id="uuidFilterInputN" placeholder="Filtrar UUID..." />
+                            <div class="dx-like-menu" id="uuidOpMenuN">
+                                <ul>
+                                    <li data-op="contains">⊚ Contiene</li>
+                                    <li data-op="notContains">⊘ No contiene</li>
+                                    <li data-op="startsWith">&#8676; Empieza con</li>
+                                    <li data-op="endsWith">&#8677; Termina con</li>
+                                    <li data-op="equals">= Igual</li>
+                                    <li data-op="notEquals">&ne; Distinto</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <input type="hidden" id="dateFilter1N" />
+                        <input type="hidden" id="dateFilter2N" />
+                        <input type="hidden" id="dateOpBtnN" />
+                    </th>
+
+                    <th style="display:none;">
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="percOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="any" id="percFilter1N" placeholder="Total..." />
+                            <input type="number" step="any" id="percFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="percOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">&ne; No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">&le; Menor o igual</li>
+                                    <li data-op="ge">&ge; Mayor o igual</li>
+                                    <li data-op="between">&#8596; Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th style="display:none;">
+                        <div class="dx-like-filter">
+                            <span class="op-btn" id="dedOpBtnN"><span class="op-label">=</span></span>
+                            <input type="number" step="any" id="dedFilter1N" placeholder="Total..." />
+                            <input type="number" step="any" id="dedFilter2N" placeholder="y..." class="d-none" />
+                            <div class="dx-like-menu" id="dedOpMenuN">
+                                <ul>
+                                    <li data-op="eq">= Igual</li>
+                                    <li data-op="ne">&ne; No igual</li>
+                                    <li data-op="lt">&lt; Menor que</li>
+                                    <li data-op="gt">&gt; Mayor que</li>
+                                    <li data-op="le">&le; Menor o igual</li>
+                                    <li data-op="ge">&ge; Mayor o igual</li>
+                                    <li data-op="between">&#8596; Entre</li>
+                                    <li data-op="reset">⟲ Reset</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
 		
 	
-	<div class="card-body bg-light pt-0" style="padding-top: 10px !important; " >
-		<div class="tab-content" style="overflow: auto;">
-			<div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-a6fa4703-a0a5-453f-a182-a8e9ae0a9282" id="dom-a6fa4703-a0a5-453f-a182-a8e9ae0a9282">
-				<div id="overSeccion_Boveda_Nomina" class="overlay" style="display: none;text-align: right;">
-					<img src="/siarex247/img/loading.gif" style="width: 30px; height: 30px;"> Procesando...
-				</div>
-				<div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-a6fa4703-a0a5-453f-a182-a8e9ae0a9282" id="dom-a6fa4703-a0a5-453f-a182-a8e9ae0a9282">
-					 <input type="hidden" id="rfcOperatorN"   value="contains" />
-					  <input type="hidden" id="razonOperatorN" value="contains" />
-					  <input type="hidden" id="serieOperatorN" value="contains" />
-					  <input type="hidden" id="uuidOperatorN"  value="contains" />
-					
-					  <input type="hidden" id="folioOperatorN" value="eq" />
-					  <input type="hidden" id="totalOperatorN" value="eq" />
-					  <input type="hidden" id="subOperatorN"   value="eq" />
-					  <input type="hidden" id="descOperatorN"  value="eq" />
-					  <input type="hidden" id="percOperatorN"  value="eq" />
-					  <input type="hidden" id="dedOperatorN"   value="eq" />
-					
-					  <input type="hidden" id="dateOperatorN"  value="eq" />
-					<table id="tablaDetalleNomina"class="table mb-0 data-table fs--1">
-						<thead class="bg-200 text-900">
-							
-						<tr>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ15">Acciones</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ16">RFC Receptor</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ17">Raz&oacute;n Social Receptor</th>
-
-							<!-- Total percepciones (se toma de Sub-Total) -->
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ21">Sub-Total</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ33">Exentas ISR</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ34">Gravadas ISR</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ35">Otros Pagos</th>
-
-							<!-- Total deducciones (se toma de Descuento) -->
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ22">Total Total</th>
-
-							<!-- Neto a pagar (se toma de Total) -->
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ20">Total</th>
-
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ25">XML</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ26">PDF</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ27">UUID</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ28">Fecha Factura</th>
-
-							<!-- columnas ocultas (se conservan para compatibilidad) -->
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ23" style="display:none;">Total Percepciones</th>
-							<th class="sort pe-1 align-middle white-space-nowrap" id="BOVEDA_NOMINA_ETQ24" style="display:none;">Total Deducciones</th>
-						</tr>
-
-
-<!-- Filtros -->
-<tr class="filters">
-  <!-- 1: Acciones -->
-  <th>
-    <!-- Folio (se conserva oculto para compatibilidad) -->
-    <div style="display:none;">
-      <span class="op-btn" id="folioOpBtnN"><span class="op-label">=</span></span>
-      <input type="number" step="1" id="folioFilter1N" placeholder="Folio..." />
-      <input type="number" step="1" id="folioFilter2N" placeholder="y..." class="d-none" />
-      <div class="dx-like-menu" id="folioOpMenuN">
-        <ul>
-          <li data-op="eq">= Igual</li>
-          <li data-op="ne">≠ No igual</li>
-          <li data-op="lt">&lt; Menor que</li>
-          <li data-op="gt">&gt; Mayor que</li>
-          <li data-op="le">≤ Menor o igual</li>
-          <li data-op="ge">≥ Mayor o igual</li>
-          <li data-op="between">↔ Entre</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-
-  <!-- 2: RFC Receptor (texto) -->
-  <th>
-    <div class="dx-like-filter">
-      <span class="op-btn" id="rfcOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
-      <input type="text" id="rfcFilterInputN" placeholder="Filtrar RFC..." />
-      <div class="dx-like-menu" id="rfcOpMenuN">
-        <ul>
-          <li data-op="contains">⊚ Contiene</li>
-          <li data-op="notContains">⊘ No contiene</li>
-          <li data-op="startsWith">&#8676; Empieza con</li>
-          <li data-op="endsWith">&#8677; Termina con</li>
-          <li data-op="equals">= Igual</li>
-          <li data-op="notEquals">&ne; Distinto</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-
-  <!-- 3: Razón Social Receptor (texto) -->
-  <th>
-    <div class="dx-like-filter">
-      <span class="op-btn" id="razonOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
-      <input type="text" id="razonFilterInputN" placeholder="Filtrar razón social..." />
-      <div class="dx-like-menu" id="razonOpMenuN">
-        <ul>
-          <li data-op="contains">⊚ Contiene</li>
-          <li data-op="notContains">⊘ No contiene</li>
-          <li data-op="startsWith">&#8676; Empieza con</li>
-          <li data-op="endsWith">&#8677; Termina con</li>
-          <li data-op="equals">= Igual</li>
-          <li data-op="notEquals">&ne; Distinto</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-
-  <!-- 4: Total Percepciones (numérico) -> Sub-Total -->
-  <th>
-    <div class="dx-like-filter">
-      <span class="op-btn" id="subOpBtnN"><span class="op-label">=</span></span>
-      <input type="number" step="any" id="subFilter1N" placeholder="Total percepciones..." />
-      <input type="number" step="any" id="subFilter2N" placeholder="y..." class="d-none" />
-      <div class="dx-like-menu" id="subOpMenuN">
-        <ul>
-          <li data-op="eq">= Igual</li>
-          <li data-op="ne">&ne; No igual</li>
-          <li data-op="lt">&lt; Menor que</li>
-          <li data-op="gt">&gt; Mayor que</li>
-          <li data-op="le">&le; Menor o igual</li>
-          <li data-op="ge">&ge; Mayor o igual</li>
-          <li data-op="between">&#8596; Entre</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-
-  <!-- 5: Exentas ISR (sin filtro por ahora) -->
-  <th></th>
-
-  <!-- 6: Gravadas ISR (sin filtro por ahora) -->
-  <th></th>
-
-  <!-- 7: Otros Pagos (sin filtro por ahora) -->
-  <th></th>
-
-  <!-- 8: Total Deducciones (numérico) -> Descuento -->
-  <th>
-    <div class="dx-like-filter">
-      <span class="op-btn" id="descOpBtnN"><span class="op-label">=</span></span>
-      <input type="number" step="any" id="descFilter1N" placeholder="Total deducciones..." />
-      <input type="number" step="any" id="descFilter2N" placeholder="y..." class="d-none" />
-      <div class="dx-like-menu" id="descOpMenuN">
-        <ul>
-          <li data-op="eq">= Igual</li>
-          <li data-op="ne">&ne; No igual</li>
-          <li data-op="lt">&lt; Menor que</li>
-          <li data-op="gt">&gt; Mayor que</li>
-          <li data-op="le">&le; Menor o igual</li>
-          <li data-op="ge">&ge; Mayor o igual</li>
-          <li data-op="between">&#8596; Entre</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-
-  <!-- 9: Neto a pagar (numérico) -> Total -->
-  <th>
-    <div class="dx-like-filter">
-      <span class="op-btn" id="totalOpBtnN"><span class="op-label">=</span></span>
-      <input type="number" step="any" id="totalFilter1N" placeholder="Neto a pagar..." />
-      <input type="number" step="any" id="totalFilter2N" placeholder="y..." class="d-none" />
-      <div class="dx-like-menu" id="totalOpMenuN">
-        <ul>
-          <li data-op="eq">= Igual</li>
-          <li data-op="ne">&ne; No igual</li>
-          <li data-op="lt">&lt; Menor que</li>
-          <li data-op="gt">&gt; Mayor que</li>
-          <li data-op="le">&le; Menor o igual</li>
-          <li data-op="ge">&ge; Mayor o igual</li>
-          <li data-op="between">&#8596; Entre</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-
-  <!-- 10: XML -->
-  <th></th>
-
-  <!-- 11: PDF -->
-  <th></th>
-
-  <!-- 12: UUID (texto) -->
-  <th>
-    <div class="dx-like-filter">
-      <span class="op-btn" id="uuidOpBtnN"><span class="op-label"><i class="fas fa-search"></i></span></span>
-      <input type="text" id="uuidFilterInputN" placeholder="Filtrar UUID..." />
-      <div class="dx-like-menu" id="uuidOpMenuN">
-        <ul>
-          <li data-op="contains">⊚ Contiene</li>
-          <li data-op="notContains">⊘ No contiene</li>
-          <li data-op="startsWith">&#8676; Empieza con</li>
-          <li data-op="endsWith">&#8677; Termina con</li>
-          <li data-op="equals">= Igual</li>
-          <li data-op="notEquals">&ne; Distinto</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-
-  <!-- 13: Fecha Factura (se filtra arriba; aquí solo se conservan inputs ocultos) -->
-  <th>
-    <input type="hidden" id="dateFilter1N" />
-    <input type="hidden" id="dateFilter2N" />
-    <input type="hidden" id="dateOpBtnN" />
-  </th>
-
-  <!-- 14: Total Percepciones (oculto, compatibilidad) -->
-  <th style="display:none;">
-    <div class="dx-like-filter">
-      <span class="op-btn" id="percOpBtnN"><span class="op-label">=</span></span>
-      <input type="number" step="any" id="percFilter1N" placeholder="Total percepciones..." />
-      <input type="number" step="any" id="percFilter2N" placeholder="y..." class="d-none" />
-      <div class="dx-like-menu" id="percOpMenuN">
-        <ul>
-          <li data-op="eq">= Igual</li>
-          <li data-op="ne">&ne; No igual</li>
-          <li data-op="lt">&lt; Menor que</li>
-          <li data-op="gt">&gt; Mayor que</li>
-          <li data-op="le">&le; Menor o igual</li>
-          <li data-op="ge">&ge; Mayor o igual</li>
-          <li data-op="between">&#8596; Entre</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-
-  <!-- 15: Total Deducciones (oculto, compatibilidad) -->
-  <th style="display:none;">
-    <div class="dx-like-filter">
-      <span class="op-btn" id="dedOpBtnN"><span class="op-label">=</span></span>
-      <input type="number" step="any" id="dedFilter1N" placeholder="Total deducciones..." />
-      <input type="number" step="any" id="dedFilter2N" placeholder="y..." class="d-none" />
-      <div class="dx-like-menu" id="dedOpMenuN">
-        <ul>
-          <li data-op="eq">= Igual</li>
-          <li data-op="ne">&ne; No igual</li>
-          <li data-op="lt">&lt; Menor que</li>
-          <li data-op="gt">&gt; Mayor que</li>
-          <li data-op="le">&le; Menor o igual</li>
-          <li data-op="ge">&ge; Mayor o igual</li>
-          <li data-op="between">&#8596; Entre</li>
-          <li data-op="reset">⟲ Reset</li>
-        </ul>
-      </div>
-    </div>
-  </th>
-</tr>
-
-
-						</thead>
-					</table>
-				</div>
-			</div>
-
-		</div> <!-- tab-content -->
-						
-	</div> <!-- card-body -->
+	
 	
 </div><!-- card mb-3 -->
 
@@ -517,17 +553,67 @@
    <input type="hidden" name="t" value="" id="tipoArchivoP_Nomina">
 </form>
 
-<form action="/siarex247/excel/descargarBovedaNominaZIP.action" name="frmBovedaNominaZIP" id="frmBovedaNominaZIP" target="_blank" method="post">
-   <input type="hidden" name="rfc" value="" id="rfcZIP_Nomina">
-   <input type="hidden" name="razonSocial" value="" id="razonSocialZIP_Nomina">
-   <input type="hidden" name="folio" value="" id="folioZIP_Nomina">
-   <input type="hidden" name="serie" value="" id="serieZIP_Nomina">
-   <input type="hidden" name="fechaInicial" value="" id="fechaInicialZIP_Nomina">
-   <input type="hidden" name="fechaFinal" value="" id="fechaFinalZIP_Nomina">
-   <input type="hidden" name="uuid" value="" id="uuidBovedaZIP_Nomina">
-   <input type="hidden" name="idRegistro" value="" id="idRegistroZIP_Nomina">
-</form>
+<form action="/siarex247/excel/descargarBovedaNominaZIP.action" 
+      name="frmBovedaNominaZIP" 
+      id="frmBovedaNominaZIP" 
+      target="_blank" 
+      method="post">
 
+   <input type="hidden" name="rfc"          value="" id="rfcZIP_Nomina">
+   <input type="hidden" name="razonSocial"  value="" id="razonSocialZIP_Nomina">
+   <input type="hidden" name="folio"        value="" id="folioZIP_Nomina">
+   <input type="hidden" name="serie"        value="" id="serieZIP_Nomina">
+   <input type="hidden" name="fechaInicial" value="" id="fechaInicialZIP_Nomina">
+   <input type="hidden" name="fechaFinal"   value="" id="fechaFinalZIP_Nomina">
+   <input type="hidden" name="uuid"         value="" id="uuidBovedaZIP_Nomina">
+   <input type="hidden" name="idRegistro"   value="" id="idRegistroZIP_Nomina">
+
+   <input type="hidden" name="rfcOperator"    id="rfcOperatorZIP_Nomina">
+   <input type="hidden" name="razonOperator"  id="razonOperatorZIP_Nomina">
+   <input type="hidden" name="serieOperator"  id="serieOperatorZIP_Nomina">
+   <input type="hidden" name="uuidOperator"   id="uuidOperatorZIP_Nomina">
+
+   <input type="hidden" name="dateOperator"   id="dateOperatorZIP_Nomina">
+   <input type="hidden" name="dateV1"         id="dateV1ZIP_Nomina">
+   <input type="hidden" name="dateV2"         id="dateV2ZIP_Nomina">
+
+   <input type="hidden" name="folioOperator"  id="folioOperatorZIP_Nomina">
+   <input type="hidden" name="folioV1"        id="folioV1ZIP_Nomina">
+   <input type="hidden" name="folioV2"        id="folioV2ZIP_Nomina">
+
+   <input type="hidden" name="totalOperator"  id="totalOperatorZIP_Nomina">
+   <input type="hidden" name="totalV1"        id="totalV1ZIP_Nomina">
+   <input type="hidden" name="totalV2"        id="totalV2ZIP_Nomina">
+
+   <input type="hidden" name="subOperator"    id="subOperatorZIP_Nomina">
+   <input type="hidden" name="subV1"          id="subV1ZIP_Nomina">
+   <input type="hidden" name="subV2"          id="subV2ZIP_Nomina">
+
+   <input type="hidden" name="descOperator"   id="descOperatorZIP_Nomina">
+   <input type="hidden" name="descV1"         id="descV1ZIP_Nomina">
+   <input type="hidden" name="descV2"         id="descV2ZIP_Nomina">
+
+   <input type="hidden" name="percOperator"   id="percOperatorZIP_Nomina">
+   <input type="hidden" name="percV1"         id="percV1ZIP_Nomina">
+   <input type="hidden" name="percV2"         id="percV2ZIP_Nomina">
+
+   <input type="hidden" name="dedOperator"    id="dedOperatorZIP_Nomina">
+   <input type="hidden" name="dedV1"          id="dedV1ZIP_Nomina">
+   <input type="hidden" name="dedV2"          id="dedV2ZIP_Nomina">
+
+   <input type="hidden" name="exentasOperator" id="exentasOperatorZIP_Nomina">
+   <input type="hidden" name="exentasV1"       id="exentasV1ZIP_Nomina">
+   <input type="hidden" name="exentasV2"       id="exentasV2ZIP_Nomina">
+
+   <input type="hidden" name="gravadasOperator" id="gravadasOperatorZIP_Nomina">
+   <input type="hidden" name="gravadasV1"       id="gravadasV1ZIP_Nomina">
+   <input type="hidden" name="gravadasV2"       id="gravadasV2ZIP_Nomina">
+
+   <input type="hidden" name="otrosOperator"    id="otrosOperatorZIP_Nomina">
+   <input type="hidden" name="otrosV1"          id="otrosV1ZIP_Nomina">
+   <input type="hidden" name="otrosV2"          id="otrosV2ZIP_Nomina">
+
+</form>
 
 
 <form action="/siarex247/excel/exportExcelBovedaNomina.action"
@@ -536,7 +622,6 @@
       target="_blank"
       method="post">
 
-  <!-- Básicos -->
   <input type="hidden" name="rfc"          id="rfc_Nomina_Exportar">
   <input type="hidden" name="razonSocial"  id="razonSocial_Nomina_Exportar">
   <input type="hidden" name="folio"        id="folio_Nomina_Exportar">
@@ -545,18 +630,15 @@
   <input type="hidden" name="fechaFinal"   id="fechaFinal_Nomina_Exportar">
   <input type="hidden" name="uuid"         id="uuid_Nomina_Exportar">
 
-  <!-- Operadores DX-like (texto) -->
   <input type="hidden" name="rfcOperator"    id="rfcOperator_Nomina_Exportar">
   <input type="hidden" name="razonOperator"  id="razonOperator_Nomina_Exportar">
   <input type="hidden" name="serieOperator"  id="serieOperator_Nomina_Exportar">
   <input type="hidden" name="uuidOperator"   id="uuidOperator_Nomina_Exportar">
 
-  <!-- Fecha -->
   <input type="hidden" name="dateOperator"   id="dateOperator_Nomina_Exportar">
   <input type="hidden" name="dateV1"         id="dateV1_Nomina_Exportar">
   <input type="hidden" name="dateV2"         id="dateV2_Nomina_Exportar">
 
-  <!-- Numéricos -->
   <input type="hidden" name="folioOperator"  id="folioOperator_Nomina_Exportar">
   <input type="hidden" name="folioV1"        id="folioV1_Nomina_Exportar">
   <input type="hidden" name="folioV2"        id="folioV2_Nomina_Exportar">
@@ -580,153 +662,199 @@
   <input type="hidden" name="dedOperator"    id="dedOperator_Nomina_Exportar">
   <input type="hidden" name="dedV1"          id="dedV1_Nomina_Exportar">
   <input type="hidden" name="dedV2"          id="dedV2_Nomina_Exportar">
+
+  <input type="hidden" name="exentasOperator" id="exentasOperator_Nomina_Exportar">
+  <input type="hidden" name="exentasV1"       id="exentasV1_Nomina_Exportar">
+  <input type="hidden" name="exentasV2"       id="exentasV2_Nomina_Exportar">
+
+  <input type="hidden" name="gravadasOperator" id="gravadasOperator_Nomina_Exportar">
+  <input type="hidden" name="gravadasV1"       id="gravadasV1_Nomina_Exportar">
+  <input type="hidden" name="gravadasV2"       id="gravadasV2_Nomina_Exportar">
+
+  <input type="hidden" name="otrosOperator"    id="otrosOperator_Nomina_Exportar">
+  <input type="hidden" name="otrosV1"          id="otrosV1_Nomina_Exportar">
+  <input type="hidden" name="otrosV2"          id="otrosV2_Nomina_Exportar">
+
 </form>
-
-
 
 
 
 
 
 <form action="/siarex247/excel/reporteResumen.action" name="frmNominaResumen" id="frmNominaResumen" target="_blank" method="post">
-   <!-- Básicos -->
-  <input type="hidden" id="rfc_Nomina_Resumen"          name="rfc"/>
-  <input type="hidden" id="razonSocial_Nomina_Resumen"  name="razonSocial"/>
-  <input type="hidden" id="folio_Nomina_Resumen"        name="folio"/>
-  <input type="hidden" id="serie_Nomina_Resumen"        name="serie"/>
-  <input type="hidden" id="fechaInicial_Nomina_Resumen" name="fechaInicial"/>
-  <input type="hidden" id="fechaFinal_Nomina_Resumen"   name="fechaFinal"/>
-  <input type="hidden" id="uuid_Nomina_Resumen"         name="uuid"/>
-  <input type="hidden" id="idRegistroResumen_Nomina"    name="idRegistro"/>
 
-  <!-- Operadores / valores -->
-  <input type="hidden" id="rfcOperator_Nomina_Resumen"    name="rfcOperator"/>
-  <input type="hidden" id="razonOperator_Nomina_Resumen"  name="razonOperator"/>
-  <input type="hidden" id="serieOperator_Nomina_Resumen"  name="serieOperator"/>
-  <input type="hidden" id="uuidOperator_Nomina_Resumen"   name="uuidOperator"/>
+    
+    <input type="hidden" name="rfc"          value="" id="rfc_Nomina_Resumen">
+    <input type="hidden" name="razonSocial"  value="" id="razonSocial_Nomina_Resumen">
+    <input type="hidden" name="folio"        value="" id="folio_Nomina_Resumen">
+    <input type="hidden" name="serie"        value="" id="serie_Nomina_Resumen">
+    <input type="hidden" name="fechaInicial" value="" id="fechaInicial_Nomina_Resumen">
+    <input type="hidden" name="fechaFinal"   value="" id="fechaFinal_Nomina_Resumen">
+    <input type="hidden" name="uuid"         value="" id="uuid_Nomina_Resumen">
+    <input type="hidden" name="idRegistro"   value="" id="idRegistroResumen_Nomina">
+    
+    <input type="hidden" name="rfcOperator"    id="rfcOperator_Nomina_Resumen">
+    <input type="hidden" name="razonOperator"  id="razonOperator_Nomina_Resumen">
+    <input type="hidden" name="serieOperator"  id="serieOperator_Nomina_Resumen">
+    <input type="hidden" name="uuidOperator"   id="uuidOperator_Nomina_Resumen">
+    
+    <input type="hidden" name="dateOperator"   id="dateOperator_Nomina_Resumen">
+    <input type="hidden" name="dateV1"         id="dateV1_Nomina_Resumen">
+    <input type="hidden" name="dateV2"         id="dateV2_Nomina_Resumen">
+    
+    <input type="hidden" name="folioOperator"  id="folioOperator_Nomina_Resumen">
+    <input type="hidden" name="folioV1"        id="folioV1_Nomina_Resumen">
+    <input type="hidden" name="folioV2"        id="folioV2_Nomina_Resumen">
+    
+    <input type="hidden" name="totalOperator"  id="totalOperator_Nomina_Resumen">
+    <input type="hidden" name="totalV1"        id="totalV1_Nomina_Resumen">
+    <input type="hidden" name="totalV2"        id="totalV2_Nomina_Resumen">
+    
+    <input type="hidden" name="subOperator"    id="subOperator_Nomina_Resumen">
+    <input type="hidden" name="subV1"          id="subV1_Nomina_Resumen">
+    <input type="hidden" name="subV2"          id="subV2_Nomina_Resumen">
+    
+    <input type="hidden" name="descOperator"   id="descOperator_Nomina_Resumen">
+    <input type="hidden" name="descV1"         id="descV1_Nomina_Resumen">
+    <input type="hidden" name="descV2"         id="descV2_Nomina_Resumen">
+    
+    <input type="hidden" name="percOperator"   id="percOperator_Nomina_Resumen">
+    <input type="hidden" name="percV1"         id="percV1_Nomina_Resumen">
+    <input type="hidden" name="percV2"         id="percV2_Nomina_Resumen">
+    
+    <input type="hidden" name="dedOperator"    id="dedOperator_Nomina_Resumen">
+    <input type="hidden" name="dedV1"          id="dedV1_Nomina_Resumen">
+    <input type="hidden" name="dedV2"          id="dedV2_Nomina_Resumen">
 
-  <input type="hidden" id="dateOperator_Nomina_Resumen"   name="dateOperator"/>
-  <input type="hidden" id="dateV1_Nomina_Resumen"         name="dateV1"/>
-  <input type="hidden" id="dateV2_Nomina_Resumen"         name="dateV2"/>
+    <input type="hidden" name="exentasOperator" id="exentasOperator_Nomina_Resumen">
+    <input type="hidden" name="exentasV1"       id="exentasV1_Nomina_Resumen">
+    <input type="hidden" name="exentasV2"       id="exentasV2_Nomina_Resumen">
 
-  <input type="hidden" id="folioOperator_Nomina_Resumen"  name="folioOperator"/>
-  <input type="hidden" id="folioV1_Nomina_Resumen"        name="folioV1"/>
-  <input type="hidden" id="folioV2_Nomina_Resumen"        name="folioV2"/>
+    <input type="hidden" name="gravadasOperator" id="gravadasOperator_Nomina_Resumen">
+    <input type="hidden" name="gravadasV1"       id="gravadasV1_Nomina_Resumen">
+    <input type="hidden" name="gravadasV2"       id="gravadasV2_Nomina_Resumen">
 
-  <input type="hidden" id="totalOperator_Nomina_Resumen"  name="totalOperator"/>
-  <input type="hidden" id="totalV1_Nomina_Resumen"        name="totalV1"/>
-  <input type="hidden" id="totalV2_Nomina_Resumen"        name="totalV2"/>
+    <input type="hidden" name="otrosOperator"    id="otrosOperator_Nomina_Resumen">
+    <input type="hidden" name="otrosV1"          id="otrosV1_Nomina_Resumen">
+    <input type="hidden" name="otrosV2"          id="otrosV2_Nomina_Resumen">
 
-  <input type="hidden" id="subOperator_Nomina_Resumen"    name="subOperator"/>
-  <input type="hidden" id="subV1_Nomina_Resumen"          name="subV1"/>
-  <input type="hidden" id="subV2_Nomina_Resumen"          name="subV2"/>
-
-  <input type="hidden" id="descOperator_Nomina_Resumen"   name="descOperator"/>
-  <input type="hidden" id="descV1_Nomina_Resumen"         name="descV1"/>
-  <input type="hidden" id="descV2_Nomina_Resumen"         name="descV2"/>
-
-  <input type="hidden" id="percOperator_Nomina_Resumen"   name="percOperator"/>
-  <input type="hidden" id="percV1_Nomina_Resumen"         name="percV1"/>
-  <input type="hidden" id="percV2_Nomina_Resumen"         name="percV2"/>
-
-  <input type="hidden" id="dedOperator_Nomina_Resumen"    name="dedOperator"/>
-  <input type="hidden" id="dedV1_Nomina_Resumen"          name="dedV1"/>
-  <input type="hidden" id="dedV2_Nomina_Resumen"          name="dedV2"/>
-   
 </form>
-
 
 <form action="/siarex247/excel/reporteDetalle.action" name="frmNominaDetalle" id="frmNominaDetalle" target="_blank" method="post">
- <!-- Básicos -->
-  <input type="hidden" id="rfc_Nomina_Detalle"          name="rfc"/>
-  <input type="hidden" id="razonSocial_Nomina_Detalle"  name="razonSocial"/>
-  <input type="hidden" id="folio_Nomina_Detalle"        name="folio"/>
-  <input type="hidden" id="serie_Nomina_Detalle"        name="serie"/>
-  <input type="hidden" id="fechaInicial_Nomina_Detalle" name="fechaInicial"/>
-  <input type="hidden" id="fechaFinal_Nomina_Detalle"   name="fechaFinal"/>
-  <input type="hidden" id="uuid_Nomina_Detalle"         name="uuid"/>
-  <input type="hidden" id="idRegistroDetalle_Nomina"    name="idRegistro"/>
 
-  <!-- Operadores / valores -->
-  <input type="hidden" id="rfcOperator_Nomina_Detalle"    name="rfcOperator"/>
-  <input type="hidden" id="razonOperator_Nomina_Detalle"  name="razonOperator"/>
-  <input type="hidden" id="serieOperator_Nomina_Detalle"  name="serieOperator"/>
-  <input type="hidden" id="uuidOperator_Nomina_Detalle"   name="uuidOperator"/>
+    
+    <input type="hidden" name="rfc"          value="" id="rfc_Nomina_Detalle">
+    <input type="hidden" name="razonSocial"  value="" id="razonSocial_Nomina_Detalle">
+    <input type="hidden" name="folio"        value="" id="folio_Nomina_Detalle">
+    <input type="hidden" name="serie"        value="" id="serie_Nomina_Detalle">
+    <input type="hidden" name="fechaInicial" value="" id="fechaInicial_Nomina_Detalle">
+    <input type="hidden" name="fechaFinal"   value="" id="fechaFinal_Nomina_Detalle">
+    <input type="hidden" name="uuid"         value="" id="uuid_Nomina_Detalle">
+    <input type="hidden" name="idRegistro"   value="" id="idRegistroDetalle_Nomina">
 
-  <input type="hidden" id="dateOperator_Nomina_Detalle"   name="dateOperator"/>
-  <input type="hidden" id="dateV1_Nomina_Detalle"         name="dateV1"/>
-  <input type="hidden" id="dateV2_Nomina_Detalle"         name="dateV2"/>
+    <input type="hidden" name="rfcOperator"    id="rfcOperator_Nomina_Detalle">
+    <input type="hidden" name="razonOperator"  id="razonOperator_Nomina_Detalle">
+    <input type="hidden" name="serieOperator"  id="serieOperator_Nomina_Detalle">
+    <input type="hidden" name="uuidOperator"   id="uuidOperator_Nomina_Detalle">
 
-  <input type="hidden" id="folioOperator_Nomina_Detalle"  name="folioOperator"/>
-  <input type="hidden" id="folioV1_Nomina_Detalle"        name="folioV1"/>
-  <input type="hidden" id="folioV2_Nomina_Detalle"        name="folioV2"/>
+    <input type="hidden" name="dateOperator"   id="dateOperator_Nomina_Detalle">
+    <input type="hidden" name="dateV1"         id="dateV1_Nomina_Detalle">
+    <input type="hidden" name="dateV2"         id="dateV2_Nomina_Detalle">
 
-  <input type="hidden" id="totalOperator_Nomina_Detalle"  name="totalOperator"/>
-  <input type="hidden" id="totalV1_Nomina_Detalle"        name="totalV1"/>
-  <input type="hidden" id="totalV2_Nomina_Detalle"        name="totalV2"/>
+    <input type="hidden" name="folioOperator"  id="folioOperator_Nomina_Detalle">
+    <input type="hidden" name="folioV1"        id="folioV1_Nomina_Detalle">
+    <input type="hidden" name="folioV2"        id="folioV2_Nomina_Detalle">
 
-  <input type="hidden" id="subOperator_Nomina_Detalle"    name="subOperator"/>
-  <input type="hidden" id="subV1_Nomina_Detalle"          name="subV1"/>
-  <input type="hidden" id="subV2_Nomina_Detalle"          name="subV2"/>
+    <input type="hidden" name="totalOperator"  id="totalOperator_Nomina_Detalle">
+    <input type="hidden" name="totalV1"        id="totalV1_Nomina_Detalle">
+    <input type="hidden" name="totalV2"        id="totalV2_Nomina_Detalle">
 
-  <input type="hidden" id="descOperator_Nomina_Detalle"   name="descOperator"/>
-  <input type="hidden" id="descV1_Nomina_Detalle"         name="descV1"/>
-  <input type="hidden" id="descV2_Nomina_Detalle"         name="descV2"/>
+    <input type="hidden" name="subOperator"    id="subOperator_Nomina_Detalle">
+    <input type="hidden" name="subV1"          id="subV1_Nomina_Detalle">
+    <input type="hidden" name="subV2"          id="subV2_Nomina_Detalle">
 
-  <input type="hidden" id="percOperator_Nomina_Detalle"   name="percOperator"/>
-  <input type="hidden" id="percV1_Nomina_Detalle"         name="percV1"/>
-  <input type="hidden" id="percV2_Nomina_Detalle"         name="percV2"/>
+    <input type="hidden" name="descOperator"   id="descOperator_Nomina_Detalle">
+    <input type="hidden" name="descV1"         id="descV1_Nomina_Detalle">
+    <input type="hidden" name="descV2"         id="descV2_Nomina_Detalle">
 
-  <input type="hidden" id="dedOperator_Nomina_Detalle"    name="dedOperator"/>
-  <input type="hidden" id="dedV1_Nomina_Detalle"          name="dedV1"/>
-  <input type="hidden" id="dedV2_Nomina_Detalle"          name="dedV2"/>
-   
+    <input type="hidden" name="percOperator"   id="percOperator_Nomina_Detalle">
+    <input type="hidden" name="percV1"         id="percV1_Nomina_Detalle">
+    <input type="hidden" name="percV2"         id="percV2_Nomina_Detalle">
+
+    <input type="hidden" name="dedOperator"    id="dedOperator_Nomina_Detalle">
+    <input type="hidden" name="dedV1"          id="dedV1_Nomina_Detalle">
+    <input type="hidden" name="dedV2"          id="dedV2_Nomina_Detalle">
+
+    <input type="hidden" name="exentasOperator" id="exentasOperator_Nomina_Detalle">
+    <input type="hidden" name="exentasV1"       id="exentasV1_Nomina_Detalle">
+    <input type="hidden" name="exentasV2"       id="exentasV2_Nomina_Detalle">
+
+    <input type="hidden" name="gravadasOperator" id="gravadasOperator_Nomina_Detalle">
+    <input type="hidden" name="gravadasV1"       id="gravadasV1_Nomina_Detalle">
+    <input type="hidden" name="gravadasV2"       id="gravadasV2_Nomina_Detalle">
+
+    <input type="hidden" name="otrosOperator"    id="otrosOperator_Nomina_Detalle">
+    <input type="hidden" name="otrosV1"          id="otrosV1_Nomina_Detalle">
+    <input type="hidden" name="otrosV2"          id="otrosV2_Nomina_Detalle">
+
 </form>
-
 <form action="/siarex247/excel/reporteNomina.action" name="frmNominaReporte" id="frmNominaReporte" target="_blank" method="post">
-    <!-- Básicos -->
-  <input type="hidden" id="rfc_Nomina_Reporte"          name="rfc"/>
-  <input type="hidden" id="razonSocial_Nomina_Reporte"  name="razonSocial"/>
-  <input type="hidden" id="folio_Nomina_Reporte"        name="folio"/>
-  <input type="hidden" id="serie_Nomina_Reporte"        name="serie"/>
-  <input type="hidden" id="fechaInicial_Nomina_Reporte" name="fechaInicial"/>
-  <input type="hidden" id="fechaFinal_Nomina_Reporte"   name="fechaFinal"/>
-  <input type="hidden" id="uuid_Nomina_Reporte"         name="uuid"/>
-  <input type="hidden" id="idRegistroReporte_Nomina"    name="idRegistro"/>
 
-  <!-- Operadores / valores -->
-  <input type="hidden" id="rfcOperator_Nomina_Reporte"    name="rfcOperator"/>
-  <input type="hidden" id="razonOperator_Nomina_Reporte"  name="razonOperator"/>
-  <input type="hidden" id="serieOperator_Nomina_Reporte"  name="serieOperator"/>
-  <input type="hidden" id="uuidOperator_Nomina_Reporte"   name="uuidOperator"/>
+    
+    <input type="hidden" name="rfc"          value="" id="rfc_Nomina_Reporte">
+    <input type="hidden" name="razonSocial"  value="" id="razonSocial_Nomina_Reporte">
+    <input type="hidden" name="folio"        value="" id="folio_Nomina_Reporte">
+    <input type="hidden" name="serie"        value="" id="serie_Nomina_Reporte">
+    <input type="hidden" name="fechaInicial" value="" id="fechaInicial_Nomina_Reporte">
+    <input type="hidden" name="fechaFinal"   value="" id="fechaFinal_Nomina_Reporte">
+    <input type="hidden" name="uuid"         value="" id="uuid_Nomina_Reporte">
+    <input type="hidden" name="idRegistro"   value="" id="idRegistroReporte_Nomina">
+    
+    <input type="hidden" name="rfcOperator"    id="rfcOperator_Nomina_Reporte">
+    <input type="hidden" name="razonOperator"  id="razonOperator_Nomina_Reporte">
+    <input type="hidden" name="serieOperator"  id="serieOperator_Nomina_Reporte">
+    <input type="hidden" name="uuidOperator"   id="uuidOperator_Nomina_Reporte">
+    
+    <input type="hidden" name="dateOperator"   id="dateOperator_Nomina_Reporte">
+    <input type="hidden" name="dateV1"         id="dateV1_Nomina_Reporte">
+    <input type="hidden" name="dateV2"         id="dateV2_Nomina_Reporte">
+    
+    <input type="hidden" name="folioOperator"  id="folioOperator_Nomina_Reporte">
+    <input type="hidden" name="folioV1"        id="folioV1_Nomina_Reporte">
+    <input type="hidden" name="folioV2"        id="folioV2_Nomina_Reporte">
+    
+    <input type="hidden" name="totalOperator"  id="totalOperator_Nomina_Reporte">
+    <input type="hidden" name="totalV1"        id="totalV1_Nomina_Reporte">
+    <input type="hidden" name="totalV2"        id="totalV2_Nomina_Reporte">
+    
+    <input type="hidden" name="subOperator"    id="subOperator_Nomina_Reporte">
+    <input type="hidden" name="subV1"          id="subV1_Nomina_Reporte">
+    <input type="hidden" name="subV2"          id="subV2_Nomina_Reporte">
+    
+    <input type="hidden" name="descOperator"   id="descOperator_Nomina_Reporte">
+    <input type="hidden" name="descV1"         id="descV1_Nomina_Reporte">
+    <input type="hidden" name="descV2"         id="descV2_Nomina_Reporte">
+    
+    <input type="hidden" name="percOperator"   id="percOperator_Nomina_Reporte">
+    <input type="hidden" name="percV1"         id="percV1_Nomina_Reporte">
+    <input type="hidden" name="percV2"         id="percV2_Nomina_Reporte">
+    
+    <input type="hidden" name="dedOperator"    id="dedOperator_Nomina_Reporte">
+    <input type="hidden" name="dedV1"          id="dedV1_Nomina_Reporte">
+    <input type="hidden" name="dedV2"          id="dedV2_Nomina_Reporte">
 
-  <input type="hidden" id="dateOperator_Nomina_Reporte"   name="dateOperator"/>
-  <input type="hidden" id="dateV1_Nomina_Reporte"         name="dateV1"/>
-  <input type="hidden" id="dateV2_Nomina_Reporte"         name="dateV2"/>
+    <input type="hidden" name="exentasOperator" id="exentasOperator_Nomina_Reporte">
+    <input type="hidden" name="exentasV1"       id="exentasV1_Nomina_Reporte">
+    <input type="hidden" name="exentasV2"       id="exentasV2_Nomina_Reporte">
 
-  <input type="hidden" id="folioOperator_Nomina_Reporte"  name="folioOperator"/>
-  <input type="hidden" id="folioV1_Nomina_Reporte"        name="folioV1"/>
-  <input type="hidden" id="folioV2_Nomina_Reporte"        name="folioV2"/>
+    <input type="hidden" name="gravadasOperator" id="gravadasOperator_Nomina_Reporte">
+    <input type="hidden" name="gravadasV1"       id="gravadasV1_Nomina_Reporte">
+    <input type="hidden" name="gravadasV2"       id="gravadasV2_Nomina_Reporte">
 
-  <input type="hidden" id="totalOperator_Nomina_Reporte"  name="totalOperator"/>
-  <input type="hidden" id="totalV1_Nomina_Reporte"        name="totalV1"/>
-  <input type="hidden" id="totalV2_Nomina_Reporte"        name="totalV2"/>
-
-  <input type="hidden" id="subOperator_Nomina_Reporte"    name="subOperator"/>
-  <input type="hidden" id="subV1_Nomina_Reporte"          name="subV1"/>
-  <input type="hidden" id="subV2_Nomina_Reporte"          name="subV2"/>
-
-  <input type="hidden" id="descOperator_Nomina_Reporte"   name="descOperator"/>
-  <input type="hidden" id="descV1_Nomina_Reporte"         name="descV1"/>
-  <input type="hidden" id="descV2_Nomina_Reporte"         name="descV2"/>
-
-  <input type="hidden" id="percOperator_Nomina_Reporte"   name="percOperator"/>
-  <input type="hidden" id="percV1_Nomina_Reporte"         name="percV1"/>
-  <input type="hidden" id="percV2_Nomina_Reporte"         name="percV2"/>
-
-  <input type="hidden" id="dedOperator_Nomina_Reporte"    name="dedOperator"/>
-  <input type="hidden" id="dedV1_Nomina_Reporte"          name="dedV1"/>
-  <input type="hidden" id="dedV2_Nomina_Reporte"          name="dedV2"/>
+    <input type="hidden" name="otrosOperator"    id="otrosOperator_Nomina_Reporte">
+    <input type="hidden" name="otrosV1"          id="otrosV1_Nomina_Reporte">
+    <input type="hidden" name="otrosV2"          id="otrosV2_Nomina_Reporte">
+    
 </form>
 
 
@@ -976,24 +1104,7 @@
 		}
 </script>
 
-			<script>
-  $(function () {
-    // Texto
-    initDxLikeFilterN({ btnId:'#rfcOpBtnN',   menuId:'#rfcOpMenuN',   inputId:'#rfcFilterInputN',   hiddenOpId:'#rfcOperatorN' });
-    initDxLikeFilterN({ btnId:'#razonOpBtnN', menuId:'#razonOpMenuN', inputId:'#razonFilterInputN', hiddenOpId:'#razonOperatorN' });
-    initDxLikeFilterN({ btnId:'#uuidOpBtnN',  menuId:'#uuidOpMenuN',  inputId:'#uuidFilterInputN',  hiddenOpId:'#uuidOperatorN' });
 
-    // Numéricos
-    initNumericDxFilterN({ btnId:'#totalOpBtnN', menuId:'#totalOpMenuN', v1Id:'#totalFilter1N', v2Id:'#totalFilter2N', opHiddenId:'#totalOperatorN' });
-    initNumericDxFilterN({ btnId:'#subOpBtnN',   menuId:'#subOpMenuN',   v1Id:'#subFilter1N',   v2Id:'#subFilter2N',   opHiddenId:'#subOperatorN' });
-    initNumericDxFilterN({ btnId:'#descOpBtnN',  menuId:'#descOpMenuN',  v1Id:'#descFilter1N',  v2Id:'#descFilter2N',  opHiddenId:'#descOperatorN' });
-    initNumericDxFilterN({ btnId:'#percOpBtnN',  menuId:'#percOpMenuN',  v1Id:'#percFilter1N',  v2Id:'#percFilter2N',  opHiddenId:'#percOperatorN' });
-    initNumericDxFilterN({ btnId:'#dedOpBtnN',   menuId:'#dedOpMenuN',   v1Id:'#dedFilter1N',   v2Id:'#dedFilter2N',   opHiddenId:'#dedOperatorN' });
-
-    // Fecha
-    initDxLikeDateFilterN({ btnId:'#dateOpBtnN', menuId:'#dateOpMenuN', input1Id:'#dateFilter1N', input2Id:'#dateFilter2N', hiddenOpId:'#dateOperatorN' });
-  });
-</script>
 
 
 			

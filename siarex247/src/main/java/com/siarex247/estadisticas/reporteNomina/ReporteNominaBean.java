@@ -50,14 +50,34 @@ public class ReporteNominaBean extends FiltrosBovedaNomina{
 	        String subOperator,   String subV1,         String subV2,
 	        String descOperator,  String descV1,        String descV2,
 	        String percOperator,  String percV1,        String percV2,
-	        String dedOperator,   String dedV1,         String dedV2
+	        String dedOperator,   String dedV1,         String dedV2,
+	        // ==== NUEVOS FILTROS (Agregados) ====
+	        String exentasOperator, String exentasV1, String exentasV2,
+	        String gravadasOperator, String gravadasV1, String gravadasV2,
+	        String otrosOperator,   String otrosV1,   String otrosV2
 	){
 	    PreparedStatement stmt = null;
 	    ResultSet rs = null;
 	    ArrayList<ReporteNominaForm> listaDetalle = new ArrayList<>();
 
 	    try {
-	        StringBuilder sb = new StringBuilder(ReporteNominaQuerys.getDetalleReporte(esquema));
+	        // 1. Obtener Query Original
+	        String qStr = ReporteNominaQuerys.getDetalleReporte(esquema);
+
+	        // =================================================================================
+	        // PARCHE: Inyectar JOIN para filtros P si no existe (Igual que en totalRegistros)
+	        // Esto es necesario porque FiltrosBovedaNomina usa "IFNULL(P.TOTAL_EXCENTO...)"
+	        // =================================================================================
+	        if (!qStr.contains("BOVEDA_NOMINA_PERCEPCIONES") && !qStr.contains(") P ")) {
+	            String tablaBase = "BOVEDA_NOMINA E";
+	            if (qStr.contains(tablaBase)) {
+	                 String joinP = " LEFT JOIN (select UUID as UUIDP, sum(TOTAL_EXCENTO) as TOTAL_EXCENTO, sum(TOTAL_GRAVADO) as TOTAL_GRAVADO from BOVEDA_NOMINA_PERCEPCIONES group by UUID) P on E.UUID = P.UUIDP ";
+	                 qStr = qStr.replace(tablaBase, tablaBase + joinP);
+	            }
+	        }
+	        // =================================================================================
+
+	        StringBuilder sb = new StringBuilder(qStr);
 	        ArrayList<Object> params = new ArrayList<>();
 
 	        // ¿El SELECT base ya trae WHERE?
@@ -73,12 +93,7 @@ public class ReporteNominaBean extends FiltrosBovedaNomina{
 	            } catch (Exception ignore) {}
 	        }
 
-	        // 1) Si te llega un UUID directo por legacy (uuidBoveda), priorízalo (equivale a "=")
-	       // if (uuidBoveda != null && !uuidBoveda.trim().isEmpty()){
-	        //    w.and("E.UUID = ?", uuidBoveda.trim());
-	       // }
-
-	        // 2) Aplica TODOS los filtros DX-like (texto/fecha/numéricos)
+	        // 2) Aplica TODOS los filtros DX-like (texto/fecha/numéricos + NUEVOS)
 	        FiltrosBovedaNomina filtros = new FiltrosBovedaNomina();
 	        filtros.aplicarFiltrosNomina(
 	            w,
@@ -87,7 +102,7 @@ public class ReporteNominaBean extends FiltrosBovedaNomina{
 	            razonSocial,  razonOperator,
 	            serie,        serieOperator,
 	            uuidBoveda,   uuidOperator,
-	            // fecha (con respaldo a fechaInicial/fechaFinal legacy)
+	            // fecha
 	            dateOperator, dateV1, dateV2, fechaInicial, fechaFinal,
 	            // numéricos
 	            folio, folioOperator, folioV1, folioV2,
@@ -95,16 +110,18 @@ public class ReporteNominaBean extends FiltrosBovedaNomina{
 	            subOperator,   subV1,   subV2,
 	            descOperator,  descV1,  descV2,
 	            percOperator,  percV1,  percV2,
-	            dedOperator,   dedV1,   dedV2
+	            dedOperator,   dedV1,   dedV2,
+	            // nuevos
+	            exentasOperator, exentasV1, exentasV2,
+	            gravadasOperator, gravadasV1, gravadasV2,
+	            otrosOperator,   otrosV1,   otrosV2
 	        );
 
 	        sb.append(" ORDER BY E.FECHA_FACTURA DESC ");
 
 	        stmt = con.prepareStatement(sb.toString());
 
-	        // IMPORTANTE:
-	        // - NO hardcodeo "N" como en Bóveda porque tu SELECT de ReporteNomina no lo usa
-	        // - Solo bindeo params generados por Where/filtros, en el orden en que se añadieron
+	        // Bindeo de parámetros
 	        int idx = 1;
 	        for (Object p : params) {
 	            if (p instanceof java.math.BigDecimal) {
@@ -126,6 +143,9 @@ public class ReporteNominaBean extends FiltrosBovedaNomina{
 
 	        while (rs.next()) {
 	            int numCol = 1;
+	            // ... (AQUÍ VA TODO TU MAPEO GIGANTE ORIGINAL QUE YA TENÍAS) ...
+	            // ... NO CAMBIES NADA DEL MAPEO ABAJO ...
+	            
 	            repForm.setIdRegistro(rs.getInt(numCol++));
 	            repForm.setUuid(Utils.noNulo(rs.getString(numCol++)));
 	            repForm.setTipoNomina(Utils.noNulo(rs.getString(numCol++)));

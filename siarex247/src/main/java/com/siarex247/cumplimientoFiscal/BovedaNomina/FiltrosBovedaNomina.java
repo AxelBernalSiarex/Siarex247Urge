@@ -7,9 +7,9 @@ import org.apache.log4j.Logger;
 /**
  * Filtros para Bóveda Nómina
  * - Texto: RECEPTOR_RFC, RECEPTOR_NOMBRE, SERIE, UUID
- * - Numéricos: FOLIO (num o texto exacto), TOTAL, SUB_TOTAL, DESCUENTO,
- *              TOTAL_PERCEPCIONES, TOTAL_DEDUCCIONES
- * - Fecha: FECHA_FACTURA (operadores y legado fechaInicial/fechaFinal)
+ * - Numéricos: FOLIO, TOTAL, SUB_TOTAL, DESCUENTO, PERCEPCIONES, DEDUCCIONES
+ * - Nuevos: EXENTAS, GRAVADAS, OTROS
+ * - Fecha: FECHA_FACTURA
  */
 public class FiltrosBovedaNomina {
 
@@ -138,13 +138,12 @@ public class FiltrosBovedaNomina {
         String ph = String.join(",", Collections.nCopies(uuids.size(), "?"));
         w.and("UUID IN ("+ph+")", uuids.toArray());
     }
-
     
     
     /* ========= Paquete de filtros para NÓMINA ========= */
     public void aplicarFiltrosNomina(Where w,
                                      // Texto
-                                     String rfc,   String rfcOp,
+                                     String rfc,    String rfcOp,
                                      String razon, String razonOp,
                                      String serie, String serieOp,
                                      String uuid,  String uuidOp,
@@ -157,9 +156,13 @@ public class FiltrosBovedaNomina {
                                      String subOp,   String subV1,   String subV2,
                                      String descOp,  String descV1,  String descV2,
                                      String percOp,  String percV1,  String percV2,
-                                     String dedOp,   String dedV1,   String dedV2) {
+                                     String dedOp,   String dedV1,   String dedV2,
+                                     // === NUEVOS FILTROS ===
+                                     String exentasOp, String exentasV1, String exentasV2,
+                                     String gravadasOp, String gravadasV1, String gravadasV2,
+                                     String otrosOp,   String otrosV1,   String otrosV2) {
 
-        // Texto (coinciden con cabeceras del JSP)
+        // Texto
         addTextFilter(w, "E.RECEPTOR_RFC",    rfc,   rfcOp);
         addTextFilter(w, "E.RECEPTOR_NOMBRE", razon, razonOp);
         addTextFilter(w, "E.SERIE",           serie, serieOp);
@@ -169,13 +172,21 @@ public class FiltrosBovedaNomina {
         addDateFilter(w, dateOp, dateV1, dateV2, fechaInicialLeg, fechaFinalLeg);
 
         // Numéricos
-        addFolio(w, folio, folioOp, folioV1, folioV2, true); // CAST a DECIMAL cuando es numérico
+        addFolio(w, folio, folioOp, folioV1, folioV2, true);
         addNumericFilter(w, "E.TOTAL",               totalOp, totalV1, totalV2);
         addNumericFilter(w, "E.SUB_TOTAL",           subOp,   subV1,   subV2);
         addNumericFilter(w, "E.DESCUENTO",           descOp,  descV1,  descV2);
-
-        // Ajusta estos nombres si en tu BD son distintos:
-        addNumericFilter(w, "E.TOTAL_PERCEPCIONES",   percOp,  percV1,  percV2);
-        addNumericFilter(w, "E.TOTAL_DEDUCCIONES",    dedOp,   dedV1,   dedV2);
+        
+        // Ajusta si tus columnas tienen otros nombres en DB
+        addNumericFilter(w, "E.TOTAL_PERCEPCIONES",  percOp,  percV1,  percV2);
+        addNumericFilter(w, "E.TOTAL_DEDUCCIONES",   dedOp,   dedV1,   dedV2);
+        
+        // === NUEVOS (CORREGIDO) ===
+        // Usamos la expresión IFNULL(P..., 0) porque vienen del LEFT JOIN 'P', no de 'E'
+        addNumericFilter(w, "IFNULL(P.TOTAL_EXCENTO, 0)", exentasOp, exentasV1, exentasV2);
+        addNumericFilter(w, "IFNULL(P.TOTAL_GRAVADO, 0)", gravadasOp, gravadasV1, gravadasV2);
+        
+        // TOTAL_OTROS sí parece estar en la tabla E según tu log, así que este se queda igual o como E.TOTAL_OTROS
+        addNumericFilter(w, "E.TOTAL_OTROS",             otrosOp,   otrosV1,   otrosV2);
     }
 }

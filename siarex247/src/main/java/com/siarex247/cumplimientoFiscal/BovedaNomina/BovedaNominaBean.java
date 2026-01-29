@@ -45,18 +45,19 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        String rfc, String razonSocial, String folio, String serie,
 	        String fechaInicial, String uuidBoveda, String fechaFinal,
 	        int start, int length, boolean isExcel,
-	        // ===== operadores/valores =====
-	        // texto
+	        // ===== operadores/valores base =====
 	        String rfcOperator,   String razonOperator, String serieOperator, String uuidOperator,
-	        // fecha
 	        String dateOperator,  String dateV1,        String dateV2,
-	        // numéricos
 	        String folioOperator, String folioV1,       String folioV2,
 	        String totalOperator, String totalV1,       String totalV2,
 	        String subOperator,   String subV1,         String subV2,
 	        String descOperator,  String descV1,        String descV2,
 	        String percOperator,  String percV1,        String percV2,
-	        String dedOperator,   String dedV1,         String dedV2
+	        String dedOperator,   String dedV1,         String dedV2,
+	        // ===== NUEVOS PARÁMETROS =====
+	        String exentasOperator, String exentasV1, String exentasV2,
+	        String gravadasOperator, String gravadasV1, String gravadasV2,
+	        String otrosOperator, String otrosV1, String otrosV2
 	) {
 
 	    PreparedStatement stmt = null;
@@ -67,9 +68,7 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        StringBuilder sb = new StringBuilder(BovedaNominaQuerys.getDetalleBoveda(esquema));
 	        List<Object> params = new ArrayList<>();
 
-	        // Tu SELECT base espera primero el tipo de comprobante
-
-	        // Where que SIEMPRE agrega " AND ... " (porque la base ya tiene WHERE)
+	        // Where que SIEMPRE agrega " AND ... "
 	        FiltrosBovedaNomina.Where w = new FiltrosBovedaNomina.Where(sb, params) {
 	            @Override
 	            public void and(String frag, Object... vals) {
@@ -79,7 +78,7 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	            }
 	        };
 
-	        // Aplica TODOS los filtros (texto, fecha, numéricos)
+	        // 1. Aplica TODOS los filtros (ahora incluyendo los nuevos)
 	        aplicarFiltrosNomina(
 	            w,
 	            // texto
@@ -87,7 +86,7 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	            razonSocial, razonOperator,
 	            serie, serieOperator,
 	            uuidBoveda,  uuidOperator,
-	            // fecha (con respaldo a fechaInicial/fechaFinal)
+	            // fecha
 	            dateOperator, dateV1, dateV2, fechaInicial, fechaFinal,
 	            // numéricos
 	            folio, folioOperator, folioV1, folioV2,
@@ -95,10 +94,13 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	            subOperator,   subV1,   subV2,
 	            descOperator,  descV1,  descV2,
 	            percOperator,  percV1,  percV2,
-	            dedOperator,   dedV1,   dedV2
+	            dedOperator,   dedV1,   dedV2,
+	            // nuevos
+	            exentasOperator, exentasV1, exentasV2,
+	            gravadasOperator, gravadasV1, gravadasV2,
+	            otrosOperator,   otrosV1,   otrosV2
 	        );
 
-	        // Orden y paginación
 	        sb.append(" ORDER BY FECHA_FACTURA DESC ");
 	        if (!isExcel) {
 	            sb.append(" LIMIT ").append(start).append(", ").append(length);
@@ -109,7 +111,7 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        for (Object p : params) {
 	            if (p instanceof java.math.BigDecimal) stmt.setBigDecimal(idx++, (java.math.BigDecimal)p);
 	            else if (p instanceof Integer)         stmt.setInt(idx++, (Integer)p);
-	            else                                    stmt.setString(idx++, String.valueOf(p));
+	            else                                   stmt.setString(idx++, String.valueOf(p));
 	        }
 	        logger.info("📈 detalleBoveda(Nómina) → " + stmt);
 
@@ -124,22 +126,16 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	            b.setFolio(Utils.noNulo(rs.getString(4)));
 	            b.setFechaFactura(Utils.noNulo(rs.getString(5)));
 
-	            // OJO: índices iguales a tu SELECT actual
 	            b.setSubTotalDouble(rs.getDouble(8));
 	            b.setSubTotal(decimal.format(rs.getDouble(8)));
-
 	            b.setTotalDouble(rs.getDouble(9));
 	            b.setTotal(decimal.format(rs.getDouble(9)));
-
 	            b.setDescuentoDouble(rs.getDouble(10));
 	            b.setDescuento(decimal.format(rs.getDouble(10)));
-
 	            b.setTotalPercepcionesDouble(rs.getDouble(11));
 	            b.setTotalPercepciones(decimal.format(rs.getDouble(11)));
-
 	            b.setTotalDeduccionesDouble(rs.getDouble(12));
 	            b.setTotalDeducciones(decimal.format(rs.getDouble(12)));
-
 	            b.setRfcEmisor(Utils.noNulo(rs.getString(13)));
 	            b.setRazonSocialEmisor(Utils.noNuloNormal(rs.getString(14)));
 	            b.setRfcReceptor(Utils.noNulo(rs.getString(15)));
@@ -147,21 +143,19 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	            b.setTipoComprobante(Utils.noNulo(rs.getString(17)));
 	            b.setFechaTimbrado(Utils.noNulo(rs.getString(18)));
 
-                // Nuevos campos: Otros Pagos, Exentas ISR, Gravadas ISR
                 b.setTotalOtrosDouble(rs.getDouble(19));
                 b.setTotalOtros(decimal.format(rs.getDouble(19)));
                 b.setTotalExcentoDouble(rs.getDouble(20));
                 b.setTotalExcento(decimal.format(rs.getDouble(20)));
                 b.setTotalGravadoDouble(rs.getDouble(21));
                 b.setTotalGravado(decimal.format(rs.getDouble(21)));
-
-
+	            
 	            lista.add(b);
 	        }
 	    } catch (Exception e) {
 	        Utils.imprimeLog("detalleBoveda(Nómina): ", e);
 	    } finally {
-	        try { if (rs != null)   rs.close(); } catch (Exception ignore) {}
+	        try { if (rs != null) rs.close(); } catch (Exception ignore) {}
 	        try { if (stmt != null) stmt.close(); } catch (Exception ignore) {}
 	    }
 	    return lista;
@@ -169,35 +163,48 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 
 
 	
-	// ===== Versión completa (con operadores) =====
 	public int totalRegistros(
-	        Connection con,
-	        String esquema,
-	        String rfc, String razonSocial, String folio, String serie,
+	        Connection con, String esquema, String rfc, String razonSocial, String folio, String serie,
 	        String fechaInicial, String uuidBoveda, String fechaFinal,
-	        // operadores texto
-	        String rfcOperator,   String razonOperator, String serieOperator, String uuidOperator,
-	        // fecha
-	        String dateOperator,  String dateV1,        String dateV2,
-	        // numéricos
-	        String folioOperator, String folioV1,       String folioV2,
-	        String totalOperator, String totalV1,       String totalV2,
-	        String subOperator,   String subV1,         String subV2,
-	        String descOperator,  String descV1,        String descV2,
-	        String percOperator,  String percV1,        String percV2,
-	        String dedOperator,   String dedV1,         String dedV2
+	        // base
+	        String rfcOperator, String razonOperator, String serieOperator, String uuidOperator,
+	        String dateOperator, String dateV1, String dateV2,
+	        String folioOperator, String folioV1, String folioV2,
+	        String totalOperator, String totalV1, String totalV2,
+	        String subOperator, String subV1, String subV2,
+	        String descOperator, String descV1, String descV2,
+	        String percOperator, String percV1, String percV2,
+	        String dedOperator, String dedV1, String dedV2,
+	        // ===== NUEVOS =====
+	        String exentasOperator, String exentasV1, String exentasV2,
+	        String gravadasOperator, String gravadasV1, String gravadasV2,
+	        String otrosOperator, String otrosV1, String otrosV2
 	) {
 	    PreparedStatement stmt = null;
 	    ResultSet rs = null;
 	    int total = 0;
-
 	    try {
-	        // Armamos el SELECT base (el mismo de detalle) y le aplicamos filtros.
-	        StringBuilder inner = new StringBuilder(BovedaNominaQuerys.getTotalRegistros(esquema));
-	        List<Object> params = new ArrayList<>();
-	        // La consulta base viene con WHERE 1=1 (sin parámetro TIPO_COMPROBANTE)
+	        // 1. Obtenemos la query base de conteo
+	        String qStr = BovedaNominaQuerys.getTotalRegistros(esquema);
 
-	        // WHERE que SIEMPRE agrega AND (porque el base ya trae WHERE 1=1)
+            // =================================================================================
+            // PARCHE: Inyectar JOIN para filtros P si no existe
+            // La query de conteo base usualmente no trae el JOIN de percepciones 'P'.
+            // Lo insertamos dinámicamente para que funcionen los filtros P.TOTAL_EXCENTO, etc.
+            // =================================================================================
+            if (!qStr.contains("BOVEDA_NOMINA_PERCEPCIONES")) {
+                // Buscamos la tabla principal con su alias E y le pegamos el JOIN
+                String tablaBase = "BOVEDA_NOMINA E";
+                if (qStr.contains(tablaBase)) {
+                     String joinP = " LEFT JOIN (select UUID as UUIDP, sum(TOTAL_EXCENTO) as TOTAL_EXCENTO, sum(TOTAL_GRAVADO) as TOTAL_GRAVADO from BOVEDA_NOMINA_PERCEPCIONES group by UUID) P on E.UUID = P.UUIDP ";
+                     qStr = qStr.replace(tablaBase, tablaBase + joinP);
+                }
+            }
+            // =================================================================================
+
+	        StringBuilder inner = new StringBuilder(qStr);
+	        List<Object> params = new ArrayList<>();
+
 	        FiltrosBovedaNomina.Where w = new FiltrosBovedaNomina.Where(inner, params) {
 	            @Override
 	            public void and(String frag, Object... vals) {
@@ -207,50 +214,44 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	            }
 	        };
 
-	        // Aplica filtros (texto, fecha, numéricos)
+	        // 1. Filtros COMPLETOS
 	        aplicarFiltrosNomina(
 	            w,
-	            // texto
-	            rfc,   rfcOperator,
-	            razonSocial, razonOperator,
-	            serie, serieOperator,
-	            uuidBoveda,  uuidOperator,
-	            // fecha (con respaldo a fechaInicial/fechaFinal)
+	            rfc, rfcOperator, razonSocial, razonOperator, serie, serieOperator, uuidBoveda, uuidOperator,
 	            dateOperator, dateV1, dateV2, fechaInicial, fechaFinal,
-	            // numéricos
 	            folio, folioOperator, folioV1, folioV2,
 	            totalOperator, totalV1, totalV2,
-	            subOperator,   subV1,   subV2,
-	            descOperator,  descV1,  descV2,
-	            percOperator,  percV1,  percV2,
-	            dedOperator,   dedV1,   dedV2
+	            subOperator, subV1, subV2,
+	            descOperator, descV1, descV2,
+	            percOperator, percV1, percV2,
+	            dedOperator, dedV1, dedV2,
+	            // nuevos
+	            exentasOperator, exentasV1, exentasV2,
+	            gravadasOperator, gravadasV1, gravadasV2,
+	            otrosOperator,   otrosV1,   otrosV2
 	        );
-
-	        // Envolvemos para contar
-	       // StringBuilder sb = new StringBuilder();
-	       // sb.append("SELECT COUNT(1) FROM (").append(inner).append(") AS T");
-
+	        
 	        stmt = con.prepareStatement(inner.toString());
 	        int idx = 1;
 	        for (Object p : params) {
 	            if (p instanceof java.math.BigDecimal) stmt.setBigDecimal(idx++, (java.math.BigDecimal)p);
 	            else if (p instanceof Integer)         stmt.setInt(idx++, (Integer)p);
-	            else                                    stmt.setString(idx++, String.valueOf(p));
+	            else                                   stmt.setString(idx++, String.valueOf(p));
 	        }
-	        logger.info("📈 totalRegistros(Nómina) → " + stmt);
 
 	        rs = stmt.executeQuery();
-	        if (rs.next()) total = rs.getInt(1);
+	        if (rs.next()) {
+	            total = rs.getInt(1);
+	        }
 
 	    } catch (Exception e) {
 	        Utils.imprimeLog("totalRegistros(Nómina): ", e);
 	    } finally {
-	        try { if (rs != null) rs.close(); }   catch (Exception ignore) {}
+	        try { if (rs != null) rs.close(); } catch (Exception ignore) {}
 	        try { if (stmt != null) stmt.close(); } catch (Exception ignore) {}
 	    }
 	    return total;
 	}
-
 	
 	public void procesarXmlBoveda(Connection con, String esquema, String esquemaEmpresa, List<File> listaXML, Integer arrResultado [], String usuarioHTTP, boolean bandGuardarDescarga) {
 		Comprobante _comprobante = null;
@@ -980,7 +981,11 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        String subOperator,   String subV1,   String subV2,
 	        String descOperator,  String descV1,  String descV2,
 	        String percOperator,  String percV1,  String percV2,
-	        String dedOperator,   String dedV1,   String dedV2
+	        String dedOperator,   String dedV1,   String dedV2,
+	        // ==== NUEVOS FILTROS ====
+	        String exentasOperator, String exentasV1, String exentasV2,
+	        String gravadasOperator, String gravadasV1, String gravadasV2,
+	        String otrosOperator,   String otrosV1,   String otrosV2
 	){
 	    PreparedStatement stmt = null;
 	    ResultSet rs = null;
@@ -994,16 +999,15 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        // ¿El SELECT base ya trae WHERE? (ej. "... WHERE ES_NOMINA = ?")
 	        boolean baseHasWhere = sb.toString().toLowerCase().contains(" where ");
 
-	        // Crea Where con el ctor existente (2 args) y prima hasWhere por reflexión si es necesario
+	        // Crea Where con el ctor existente (2 args) y fuerza hasWhere si es necesario
 	        FiltrosBovedaNomina.Where w = new FiltrosBovedaNomina.Where(sb, params);
 	        if (baseHasWhere) {
 	            try {
 	                java.lang.reflect.Field f = FiltrosBovedaNomina.Where.class.getDeclaredField("hasWhere");
 	                f.setAccessible(true);
-	                f.setBoolean(w, true); // <- dejamos el WHERE "activo" para que agregue "AND ..."
+	                f.setBoolean(w, true); // Dejamos el WHERE "activo" para que agregue "AND ..."
 	            } catch (Exception ignore) {
-	                // Si por alguna razón falla la reflexión, igual funcionará;
-	                // pero ojo que podría insertar un WHERE extra si el base ya lo tenía.
+	                // Fallback silencioso
 	            }
 	        }
 
@@ -1015,7 +1019,7 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	            }
 	            filtros.addUuidIn(w, uuids);
 	        } else {
-	            // 2) Si no, aplica TODOS los filtros con operadores
+	            // 2) Si no, aplica TODOS los filtros con operadores (incluyendo nuevos)
 	            filtros.aplicarFiltrosNomina(
 	                w,
 	                // Texto
@@ -1032,7 +1036,11 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	                subOperator,   subV1,   subV2,
 	                descOperator,  descV1,  descV2,
 	                percOperator,  percV1,  percV2,
-	                dedOperator,   dedV1,   dedV2
+	                dedOperator,   dedV1,   dedV2,
+	                // Nuevos
+	                exentasOperator, exentasV1, exentasV2,
+	                gravadasOperator, gravadasV1, gravadasV2,
+	                otrosOperator,   otrosV1,   otrosV2
 	            );
 	        }
 
@@ -1041,15 +1049,16 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 
 	        int idx = 1;
 
-	        // Si tu SELECT base tiene el primer parámetro (ej. ES_NOMINA = ?), déjalo:
-	        stmt.setString(idx++, "N");
-	        // Si NO lo tiene, comenta o elimina la línea anterior.
+	        // Si tu SELECT base requiere parámetro (ej. "N"), descomenta esto:
+	        // stmt.setString(idx++, "N"); 
 
 	        // Bind de parámetros generados por los filtros (en orden)
 	        for (Object p : params) {
 	            if (p instanceof java.math.BigDecimal) {
 	                stmt.setBigDecimal(idx++, (java.math.BigDecimal) p);
-	            } else {
+	            } else if (p instanceof Integer) {
+                    stmt.setInt(idx++, (Integer) p);
+                } else {
 	                stmt.setString(idx++, String.valueOf(p));
 	            }
 	        }
@@ -1089,14 +1098,13 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 
 
 
-
 	
 	public ArrayList<BovedaNominaForm> reporteDetalleXML(
 	        Connection con,
 	        String esquema,
 	        String rfc, String razonSocial, String folio, String serie,
 	        String fechaInicial, String uuidBoveda, String fechaFinal,
-	        String idRegistro,                 // <-- NUEVO: selección de UUIDs "u1;u2;u3;"
+	        String idRegistro,                 // selección de UUIDs
 	        int start, int length, boolean isExcel,
 	        // ===== operadores/valores =====
 	        // texto
@@ -1109,7 +1117,11 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        String subOperator,   String subV1,         String subV2,
 	        String descOperator,  String descV1,        String descV2,
 	        String percOperator,  String percV1,        String percV2,
-	        String dedOperator,   String dedV1,         String dedV2
+	        String dedOperator,   String dedV1,         String dedV2,
+	        // ==== NUEVOS FILTROS ====
+	        String exentasOperator, String exentasV1, String exentasV2,
+	        String gravadasOperator, String gravadasV1, String gravadasV2,
+	        String otrosOperator,   String otrosV1,   String otrosV2
 	) {
 
 	    PreparedStatement stmt = null;
@@ -1117,13 +1129,15 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	    ArrayList<BovedaNominaForm> listaDetalle = new ArrayList<>();
 
 	    try {
-	        StringBuilder sb = new StringBuilder(BovedaNominaQuerys.getReporteDetalle(esquema));
+	        StringBuilder sb = new StringBuilder(BovedaNominaQuerys.getDetalleBoveda(esquema));
 	        List<Object> params = new ArrayList<>();
 
-	        // Tu SELECT base espera primero el tipo de comprobante 'N' como parámetro (posición 1)
-	        params.add("N");
+	        // Si la query base tiene un parámetro '?' para TIPO_COMPROBANTE, agregarlo:
+	        if (BovedaNominaQuerys.getDetalleBoveda(esquema).contains("?")) {
+	             params.add("N");
+	        }
 
-	        // WHERE builder que SIEMPRE agrega " AND ..." (porque tu SELECT base ya trae WHERE)
+	        // WHERE builder
 	        FiltrosBovedaNomina.Where w = new FiltrosBovedaNomina.Where(sb, params) {
 	            @Override
 	            public void and(String frag, Object... vals) {
@@ -1135,26 +1149,27 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 
 	        FiltrosBovedaNomina filtros = new FiltrosBovedaNomina();
 
-	        // ===== Aplica filtros DX-like =====
+	        // ===== Aplica filtros =====
 	        filtros.aplicarFiltrosNomina(
 	                w,
-	                // Texto
 	                rfc,   rfcOperator,
 	                razonSocial, razonOperator,
 	                serie, serieOperator,
 	                uuidBoveda,  uuidOperator,
-	                // Fecha (con respaldo a legado fechaInicial/fechaFinal)
 	                dateOperator, dateV1, dateV2, fechaInicial, fechaFinal,
-	                // Numéricos
 	                folio, folioOperator, folioV1, folioV2,
 	                totalOperator, totalV1, totalV2,
 	                subOperator,   subV1,   subV2,
 	                descOperator,  descV1,  descV2,
 	                percOperator,  percV1,  percV2,
-	                dedOperator,   dedV1,   dedV2
+	                dedOperator,   dedV1,   dedV2,
+	                // Nuevos
+	                exentasOperator, exentasV1, exentasV2,
+	                gravadasOperator, gravadasV1, gravadasV2,
+	                otrosOperator,   otrosV1,   otrosV2
 	        );
 
-	        // ===== Selección de UUIDs (si viene idRegistro con "uuid;uuid;") =====
+	        // ===== Selección de UUIDs =====
 	        List<String> uuidList = new ArrayList<>();
 	        if (idRegistro != null && !idRegistro.trim().isEmpty()) {
 	            for (String u : idRegistro.split(";")) {
@@ -1164,47 +1179,64 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	        }
 	        filtros.addUuidIn(w, uuidList);
 
-	        // ===== Orden + (sin paginar para Excel) =====
+	        // ===== Orden =====
 	        sb.append(" ORDER BY E.FECHA_FACTURA DESC ");
+	        
+	        // Paginación (si no es Excel)
 	        if (!isExcel && length > 0) {
 	            sb.append(" LIMIT ").append(start).append(", ").append(length);
 	        }
 
-	        // ===== Prepara stmt y enlaza parámetros =====
 	        stmt = con.prepareStatement(sb.toString());
 	        int idx = 1;
 	        for (Object p : params) {
-	            if (p instanceof BigDecimal)     stmt.setBigDecimal(idx++, (BigDecimal) p);
-	            else if (p instanceof Integer)   stmt.setInt(idx++, (Integer) p);
-	            else                             stmt.setString(idx++, String.valueOf(p));
+	            if (p instanceof java.math.BigDecimal) stmt.setBigDecimal(idx++, (java.math.BigDecimal) p);
+	            else if (p instanceof Integer)         stmt.setInt(idx++, (Integer) p);
+	            else                                   stmt.setString(idx++, String.valueOf(p));
 	        }
 
-	        logger.info("📄 reporteDetalleXML (Nómina) → " + stmt);
 	        rs = stmt.executeQuery();
-
 	        java.text.DecimalFormat decimal = new java.text.DecimalFormat("###,###.##");
 
-	        // ===== Mapea resultados (índices según tu SELECT de getReporteDetalle) =====
 	        while (rs.next()) {
 	            BovedaNominaForm b = new BovedaNominaForm();
 
+	            // Mapeo basado en tu query:
+	            // 1:ID, 2:UUID, 3:SERIE, 4:FOLIO, 5:FECHA, ..., 17:TIPO_COMPROBANTE
+	            
 	            b.setIdRegistro(rs.getInt(1));
 	            b.setUuid(Utils.noNuloNormal(rs.getString(2)));
-	            b.setRfcReceptor(Utils.noNulo(rs.getString(3)));
-	            b.setRazonSocialReceptor(Utils.noNulo(rs.getString(4)));
-	            b.setFechaPago(Utils.noNulo(rs.getString(5)));
-	            b.setNumEmpleado(Utils.noNulo(rs.getString(6)));
-	            b.setPuesto(Utils.noNulo(rs.getString(7)));
-	            b.setRegistroPatronal(Utils.noNulo(rs.getString(8)));
-	            b.setTipo(Utils.noNulo(rs.getString(9)));
-	            b.setClave(Utils.noNulo(rs.getString(10)));
-	            b.setConcepto(Utils.noNuloNormal(rs.getString(11)));
+	            b.setSerie(Utils.noNulo(rs.getString(3)));
+	            b.setFolio(Utils.noNulo(rs.getString(4)));
+	            b.setFechaPago(Utils.noNulo(rs.getString(5))); // Fecha Factura
+	            
+	            b.setSubTotalDouble(rs.getDouble(8));
+	            b.setTotalDouble(rs.getDouble(9));
+	            b.setDescuentoDouble(rs.getDouble(10));
+	            b.setTotalPercepcionesDouble(rs.getDouble(11));
+	            b.setTotalDeduccionesDouble(rs.getDouble(12));
 
-	            b.setImporteGravadoDouble(rs.getDouble(12));
-	            b.setImporteGravado(decimal.format(b.getImporteGravadoDouble()));
+	            b.setRfcEmisor(Utils.noNulo(rs.getString(13)));
+	            b.setRazonSocialEmisor(Utils.noNulo(rs.getString(14)));
+	            b.setRfcReceptor(Utils.noNulo(rs.getString(15)));
+	            b.setRazonSocialReceptor(Utils.noNulo(rs.getString(16)));
+	            
+	            // === CORRECCIÓN DE LA EXCEPCIÓN ===
+	            // Asignamos el TIPO_COMPROBANTE (Columna 17)
+	            b.setTipo(Utils.noNulo(rs.getString(17))); 
+	            // ==================================
 
-	            b.setImporteExcentoDouble(rs.getDouble(13));
+	            b.setFechaTimbrado(Utils.noNulo(rs.getString(18)));
+	            
+	            b.setTotalOtrosDouble(rs.getDouble(19));
+	            b.setImporteExcentoDouble(rs.getDouble(20));
+	            b.setImporteGravadoDouble(rs.getDouble(21));
+
+	            // Formatos String
+	            b.setTotal(decimal.format(b.getTotalDouble()));
+	            b.setSubTotal(decimal.format(b.getSubTotalDouble()));
 	            b.setImporteExcento(decimal.format(b.getImporteExcentoDouble()));
+	            b.setImporteGravado(decimal.format(b.getImporteGravadoDouble()));
 
 	            listaDetalle.add(b);
 	        }
