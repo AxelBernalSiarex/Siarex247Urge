@@ -1392,134 +1392,152 @@ public class ConvierteEXCEL {
 	}
 	
 	public void toExcelNomina(SXSSFSheet hoja1, ArrayList<BovedaNominaForm> datosBoveda, 
-			SXSSFWorkbook objLibro, int regInicial, int regFinal, String lenguaje) {
-		  try {
-			  
-		  	   LenguajeBean lenguajeBean = LenguajeBean.instance();
-		  	   HashMap<String, String> mapaLenguaje = lenguajeBean.obtenerEtiquetas(lenguaje, "BOVEDA_NOMINA");
+	        SXSSFWorkbook objLibro, int regInicial, int regFinal, String lenguaje) {
+	    try {
+	        LenguajeBean lenguajeBean = LenguajeBean.instance();
+	        HashMap<String, String> mapaLenguaje = lenguajeBean.obtenerEtiquetas(lenguaje, "BOVEDA_NOMINA");
 
-//				 final String[] encabezados = {"RFC Receptor", "Razon Social Receptor", "Serie", "Tipo de Comprobante", "Folio", "Total",
-//	                       "Sub-Total", "Descuento", "Total Percepciones", "Total Deducciones.", "UUID", "Fecha Factura"};
+	        // 1. DEFINIR NUEVOS ENCABEZADOS (Sin Serie/Folio, y con el nuevo orden)
+	        // Nota: He puesto textos fijos para las columnas nuevas (Exentas, Gravadas, Otros). 
+	        // Si tienes etiquetas en DB (ETQ...), cámbialas aquí.
+	        final String[] encabezados = {
+	            mapaLenguaje.get("ETQ16"), // RFC Receptor
+	            mapaLenguaje.get("ETQ17"), // Razón Social Receptor
+	            "Total Percepciones",      // (Antes Subtotal)
+	            "Exentas ISR",             // NUEVO
+	            "Gravadas ISR",            // NUEVO
+	            "Otros Pagos",             // NUEVO
+	            "Total Deducciones",       // (Antes Descuentos/Total Deducciones)
+	            "Neto a Pagar",            // (Antes Total)
+	            mapaLenguaje.get("ETQ28"), // UUID
+	            mapaLenguaje.get("ETQ20")  // Fecha Factura (Ajusta si ETQ20 no es fecha)
+	        };
 
-				 final String[] encabezados = {mapaLenguaje.get("ETQ16"), mapaLenguaje.get("ETQ17"), mapaLenguaje.get("ETQ18"), mapaLenguaje.get("ETQ19"), mapaLenguaje.get("ETQ20"),
-						 mapaLenguaje.get("ETQ21"), mapaLenguaje.get("ETQ22"), mapaLenguaje.get("ETQ23"), mapaLenguaje.get("ETQ24"), mapaLenguaje.get("ETQ27"), mapaLenguaje.get("ETQ28")};
+	        // Estilos (Se mantienen igual)
+	        Row header = hoja1.createRow(0);
+	        header.setHeightInPoints(18);
 
-				 
-			   Row header = hoja1.createRow(0);
-			   header.setHeightInPoints(18);
-			   
-			   CellStyle styleTitulo = objLibro.createCellStyle();
-			   Font headerFont = objLibro.createFont();
-		       headerFont.setFontHeightInPoints((short)10);
-		       headerFont.setColor(IndexedColors.WHITE.getIndex());
-		       headerFont.setFontName("Arial");
-		       headerFont.setBold(true);
-		       styleTitulo.setFillForegroundColor(new XSSFColor(UtilsColor.getBytes(12, 57, 90)));
-		       styleTitulo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		       styleTitulo.setFont(headerFont);
-		       styleTitulo.setAlignment(HorizontalAlignment.CENTER);
-		       
-		       CellStyle styleSubTitulo = objLibro.createCellStyle();
-			   Font fontSub = objLibro.createFont();
-			   fontSub.setFontHeightInPoints((short)10);
-			   fontSub.setFontName("Arial");
-			   fontSub.setBold(true);
-		       styleSubTitulo.setFont(fontSub);
-		       styleSubTitulo.setAlignment(HorizontalAlignment.CENTER);
-			   
-		       
-			   Cell monthCell = header.createCell(0);
-			   monthCell.setCellValue("Sistema de Recepcion de XML - Boveda Nomina");
-			   monthCell.setCellStyle(styleTitulo);
-			   hoja1.addMergedRegion(CellRangeAddress.valueOf("A1:K1"));
-			   
-			   
-			   header = hoja1.createRow(1);
-			   header.setHeightInPoints(18);
-			   Cell monthCell2 = header.createCell(0);
-			   monthCell2.setCellValue("Detalle Boveda XML");
-			   monthCell2.setCellStyle(styleSubTitulo);
-			    //estiloCelda2.setAlignment(HorizontalAlignment.CENTER);
-			   //monthCell2.setCellStyle(estiloCelda3);
-			   hoja1.addMergedRegion(CellRangeAddress.valueOf("A2:K2"));
-			    
-			  header = hoja1.createRow(2);
-			  header.setHeightInPoints(18);
-			  for (int i = 0; i < encabezados.length; i++) {
-			    monthCell = header.createCell(i);
-			    monthCell.setCellValue(encabezados[i]);
-			    // monthCell.setCellStyle(encabezadoDetalle);
-			    		    
-			  }
-			  hoja1.trackAllColumnsForAutoSizing();
-			  
-			  Cell celda = null;
-			  BovedaNominaForm bovedaForm = null;
-			  Row fila = null;
-			  //boolean bandRen = true;
-			  //HSSFCellStyle estiloCeldaFinal = null;
+	        CellStyle styleTitulo = objLibro.createCellStyle();
+	        Font headerFont = objLibro.createFont();
+	        headerFont.setFontHeightInPoints((short)10);
+	        headerFont.setColor(IndexedColors.WHITE.getIndex());
+	        headerFont.setFontName("Arial");
+	        headerFont.setBold(true);
+	        styleTitulo.setFillForegroundColor(new XSSFColor(UtilsColor.getBytes(12, 57, 90)));
+	        styleTitulo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        styleTitulo.setFont(headerFont);
+	        styleTitulo.setAlignment(HorizontalAlignment.CENTER);
 
-			  hoja1.setColumnWidth(0, 5000);
-			  hoja1.setColumnWidth(1, 10000);
-			  hoja1.setColumnWidth(2, 3500);
-			  hoja1.setColumnWidth(3, 3500);
-			  hoja1.setColumnWidth(4, 3500);
-			  hoja1.setColumnWidth(5, 3500);
-			  hoja1.setColumnWidth(6, 4500);
-			  hoja1.setColumnWidth(7, 4500);
-			  hoja1.setColumnWidth(8, 4500);
-			  hoja1.setColumnWidth(9, 10000);
-			  hoja1.setColumnWidth(10, 6000);
-			  
-			  int numRow = 3;
-			  for (int x = regInicial; x < regFinal; x++) {
-				   bovedaForm = datosBoveda.get(x);
-				   fila = hoja1.createRow(numRow++);
+	        CellStyle styleSubTitulo = objLibro.createCellStyle();
+	        Font fontSub = objLibro.createFont();
+	        fontSub.setFontHeightInPoints((short)10);
+	        fontSub.setFontName("Arial");
+	        fontSub.setBold(true);
+	        styleSubTitulo.setFont(fontSub);
+	        styleSubTitulo.setAlignment(HorizontalAlignment.CENTER);
 
-				   if (x % 100 == 0 && x != 0) { // Flush every 100 rows (after the first 100)
-	                    ((SXSSFSheet) hoja1).flushRows(100); // Retain the last 100 rows in memory
-	                }
+	        // Fila 1: Título
+	        Cell monthCell = header.createCell(0);
+	        monthCell.setCellValue("Sistema de Recepcion de XML - Boveda Nomina");
+	        monthCell.setCellStyle(styleTitulo);
+	        // Ajustamos el merge de A1 hasta J1 (10 columnas ahora)
+	        hoja1.addMergedRegion(CellRangeAddress.valueOf("A1:J1")); 
 
-				   
-				   celda = fila.createCell(0);
-				   celda.setCellValue(bovedaForm.getRfcReceptor());
+	        // Fila 2: Subtítulo
+	        header = hoja1.createRow(1);
+	        header.setHeightInPoints(18);
+	        Cell monthCell2 = header.createCell(0);
+	        monthCell2.setCellValue("Detalle Boveda XML");
+	        monthCell2.setCellStyle(styleSubTitulo);
+	        hoja1.addMergedRegion(CellRangeAddress.valueOf("A2:J2"));
 
-				   celda = fila.createCell(1);
-				   celda.setCellValue(bovedaForm.getRazonSocialReceptor());
+	        // Fila 3: Encabezados de columna
+	        header = hoja1.createRow(2);
+	        header.setHeightInPoints(18);
+	        for (int i = 0; i < encabezados.length; i++) {
+	            monthCell = header.createCell(i);
+	            monthCell.setCellValue(encabezados[i]);
+	        }
+	        hoja1.trackAllColumnsForAutoSizing();
 
-				   celda = fila.createCell(2);
-				   celda.setCellValue(bovedaForm.getSerie());
+	        // 2. AJUSTAR ANCHO DE COLUMNAS (Indices 0 al 9)
+	        hoja1.setColumnWidth(0, 4500);  // RFC
+	        hoja1.setColumnWidth(1, 9000);  // Razón Social
+	        hoja1.setColumnWidth(2, 4000);  // Total Percepciones (Subtotal)
+	        hoja1.setColumnWidth(3, 4000);  // Exentas
+	        hoja1.setColumnWidth(4, 4000);  // Gravadas
+	        hoja1.setColumnWidth(5, 4000);  // Otros Pagos
+	        hoja1.setColumnWidth(6, 4000);  // Total Deducciones
+	        hoja1.setColumnWidth(7, 4000);  // Neto (Total)
+	        hoja1.setColumnWidth(8, 9500);  // UUID
+	        hoja1.setColumnWidth(9, 4500);  // Fecha
 
-				   celda = fila.createCell(3);
-				   celda.setCellValue(bovedaForm.getFolio());
-				   
-				   celda = fila.createCell(4);
-				   celda.setCellValue(Utils.convertirDouble(bovedaForm.getTotal()));
+	        Cell celda = null;
+	        BovedaNominaForm bovedaForm = null;
+	        Row fila = null;
 
-				   celda = fila.createCell(5);
-				   celda.setCellValue(Utils.convertirDouble(bovedaForm.getSubTotal()));
+	        int numRow = 3;
+	        for (int x = regInicial; x < regFinal; x++) {
+	            bovedaForm = datosBoveda.get(x);
+	            fila = hoja1.createRow(numRow++);
 
-				   celda = fila.createCell(6);
-				   celda.setCellValue(Utils.convertirDouble(bovedaForm.getDescuento()));
+	            if (x % 100 == 0 && x != 0) {
+	                ((SXSSFSheet) hoja1).flushRows(100);
+	            }
 
-				   celda = fila.createCell(7);
-				   celda.setCellValue(Utils.convertirDouble(bovedaForm.getTotalPercepciones()));
+	            // 3. MAPEO DE DATOS SEGÚN TU NUEVO ORDEN
 
-				   celda = fila.createCell(8);
-				   celda.setCellValue(Utils.convertirDouble(bovedaForm.getTotalDeducciones()));
-				   
-				   celda = fila.createCell(9);
-				   celda.setCellValue(bovedaForm.getUuid());
+	            // Col 0: RFC Receptor
+	            celda = fila.createCell(0);
+	            celda.setCellValue(bovedaForm.getRfcReceptor());
 
-				   celda = fila.createCell(10);
-				   celda.setCellValue(bovedaForm.getFechaFactura());
-				   
-				   celda = null;
-			  }
-		  }
-		  catch (Exception e) {
-			  Utils.imprimeLog("toExcel(): ", e);
-		  }
+	            // Col 1: Razón Social Receptor
+	            celda = fila.createCell(1);
+	            celda.setCellValue(bovedaForm.getRazonSocialReceptor());
+
+	            // --- ELIMINADOS: Serie y Folio ---
+
+	            // Col 2: Total Percepciones (Usuario: "que es el subtotal")
+	            celda = fila.createCell(2);
+	            celda.setCellValue(Utils.convertirDouble(bovedaForm.getSubTotal())); 
+
+	            // Col 3: Exentas ISR
+	            celda = fila.createCell(3);
+	            celda.setCellValue(Utils.convertirDouble(bovedaForm.getImporteExcento())); 
+
+	            // Col 4: Gravadas ISR
+	            celda = fila.createCell(4);
+	            celda.setCellValue(Utils.convertirDouble(bovedaForm.getImporteGravado())); 
+
+	            // Col 5: Otros Pagos (Total Otros)
+	            celda = fila.createCell(5);
+	            // Usamos getTotalOtrosDouble() o getTotalOtros() según lo que tengas en el Form
+	            // Asumo que agregaste getTotalOtros() o similar. Si es string:
+	            // celda.setCellValue(Utils.convertirDouble(bovedaForm.getTotalOtros())); 
+	            // Si es double directo:
+	            celda.setCellValue(bovedaForm.getTotalOtrosDouble());
+
+	            // Col 6: Total Deducciones (Usuario: "que es descuentos / deducciones")
+	            celda = fila.createCell(6);
+	            celda.setCellValue(Utils.convertirDouble(bovedaForm.getTotalDeducciones())); 
+
+	            // Col 7: Neto a Pagar (Usuario: "que es el total")
+	            celda = fila.createCell(7);
+	            celda.setCellValue(Utils.convertirDouble(bovedaForm.getTotal()));
+
+	            // Col 8: UUID
+	            celda = fila.createCell(8);
+	            celda.setCellValue(bovedaForm.getUuid());
+
+	            // Col 9: Fecha Factura
+	            celda = fila.createCell(9);
+	            celda.setCellValue(bovedaForm.getFechaPago()); // O getFechaFactura()
+
+	            celda = null;
+	        }
+	    } catch (Exception e) {
+	        Utils.imprimeLog("toExcel(): ", e);
+	    }
 	}
 
 	

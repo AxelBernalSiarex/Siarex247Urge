@@ -253,6 +253,137 @@ public class BovedaNominaBean extends FiltrosBovedaNomina {
 	    return total;
 	}
 	
+	public ArrayList<BovedaNominaForm> detalleBovedaExcel(
+            Connection con,
+            String esquema,
+            String rfc, String razonSocial, String folio, String serie,
+            String fechaInicial, String uuidBoveda, String fechaFinal,
+            int start, int length, boolean isExcel,
+            // ===== operadores/valores base =====
+            String rfcOperator,   String razonOperator, String serieOperator, String uuidOperator,
+            String dateOperator,  String dateV1,        String dateV2,
+            String folioOperator, String folioV1,       String folioV2,
+            String totalOperator, String totalV1,       String totalV2,
+            String subOperator,   String subV1,         String subV2,
+            String descOperator,  String descV1,        String descV2,
+            String percOperator,  String percV1,        String percV2,
+            String dedOperator,   String dedV1,         String dedV2,
+            // ===== NUEVOS PARÁMETROS =====
+            String exentasOperator, String exentasV1, String exentasV2,
+            String gravadasOperator, String gravadasV1, String gravadasV2,
+            String otrosOperator, String otrosV1, String otrosV2
+    ) {
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ArrayList<BovedaNominaForm> lista = new ArrayList<>();
+
+        try {
+            // Usamos getDetalleBoveda (asegúrate de que tenga el JOIN con P)
+            StringBuilder sb = new StringBuilder(BovedaNominaQuerys.getDetalleBoveda(esquema));
+            List<Object> params = new ArrayList<>();
+
+            if (BovedaNominaQuerys.getDetalleBoveda(esquema).contains("?")) {
+                 params.add("N");
+            }
+
+            // Where que SIEMPRE agrega " AND ... "
+            FiltrosBovedaNomina.Where w = new FiltrosBovedaNomina.Where(sb, params) {
+                @Override
+                public void and(String frag, Object... vals) {
+                    if (frag == null || frag.isEmpty()) return;
+                    sb.append(" AND ").append(frag);
+                    if (vals != null) for (Object v : vals) if (v != null) params.add(v);
+                }
+            };
+
+            // 1. Aplica TODOS los filtros (ahora incluyendo los nuevos)
+            FiltrosBovedaNomina filtros = new FiltrosBovedaNomina();
+            filtros.aplicarFiltrosNomina(
+                w,
+                // texto
+                rfc,   rfcOperator,
+                razonSocial, razonOperator,
+                serie, serieOperator,
+                uuidBoveda,  uuidOperator,
+                // fecha
+                dateOperator, dateV1, dateV2, fechaInicial, fechaFinal,
+                // numéricos
+                folio, folioOperator, folioV1, folioV2,
+                totalOperator, totalV1, totalV2,
+                subOperator,   subV1,   subV2,
+                descOperator,  descV1,  descV2,
+                percOperator,  percV1,  percV2,
+                dedOperator,   dedV1,   dedV2,
+                // nuevos
+                exentasOperator, exentasV1, exentasV2,
+                gravadasOperator, gravadasV1, gravadasV2,
+                otrosOperator,   otrosV1,   otrosV2
+            );
+
+            sb.append(" ORDER BY FECHA_FACTURA DESC ");
+            if (!isExcel && length > 0) {
+                sb.append(" LIMIT ").append(start).append(", ").append(length);
+            }
+
+            stmt = con.prepareStatement(sb.toString());
+            int idx = 1;
+            for (Object p : params) {
+                if (p instanceof java.math.BigDecimal) stmt.setBigDecimal(idx++, (java.math.BigDecimal)p);
+                else if (p instanceof Integer)         stmt.setInt(idx++, (Integer)p);
+                else                                   stmt.setString(idx++, String.valueOf(p));
+            }
+            // logger.info("📈 detalleBovedaExcel(Nómina) → " + stmt);
+
+            rs = stmt.executeQuery();
+            java.text.DecimalFormat decimal = new java.text.DecimalFormat("###,###.##");
+
+            while (rs.next()) {
+                BovedaNominaForm b = new BovedaNominaForm();
+                b.setIdRegistro(rs.getInt(1));
+                b.setUuid(Utils.noNuloNormal(rs.getString(2)));
+                b.setSerie(Utils.noNulo(rs.getString(3)));
+                b.setFolio(Utils.noNulo(rs.getString(4)));
+                b.setFechaFactura(Utils.noNulo(rs.getString(5)));
+
+                b.setSubTotalDouble(rs.getDouble(8));
+                b.setSubTotal(decimal.format(rs.getDouble(8)));
+                b.setTotalDouble(rs.getDouble(9));
+                b.setTotal(decimal.format(rs.getDouble(9)));
+                b.setDescuentoDouble(rs.getDouble(10));
+                b.setDescuento(decimal.format(rs.getDouble(10)));
+                b.setTotalPercepcionesDouble(rs.getDouble(11));
+                b.setTotalPercepciones(decimal.format(rs.getDouble(11)));
+                b.setTotalDeduccionesDouble(rs.getDouble(12));
+                b.setTotalDeducciones(decimal.format(rs.getDouble(12)));
+                b.setRfcEmisor(Utils.noNulo(rs.getString(13)));
+                b.setRazonSocialEmisor(Utils.noNuloNormal(rs.getString(14)));
+                b.setRfcReceptor(Utils.noNulo(rs.getString(15)));
+                b.setRazonSocialReceptor(Utils.noNuloNormal(rs.getString(16)));
+                b.setTipoComprobante(Utils.noNulo(rs.getString(17)));
+                b.setFechaTimbrado(Utils.noNulo(rs.getString(18)));
+
+                // LECTURA DE NUEVAS COLUMNAS
+                b.setTotalOtrosDouble(rs.getDouble(19));
+                b.setTotalOtros(decimal.format(rs.getDouble(19)));
+                
+                b.setImporteExcentoDouble(rs.getDouble(20)); // Usa setImporte... no setTotal... según tu Form
+                b.setImporteExcento(decimal.format(rs.getDouble(20)));
+                
+                b.setImporteGravadoDouble(rs.getDouble(21));
+                b.setImporteGravado(decimal.format(rs.getDouble(21)));
+                
+                lista.add(b);
+            }
+        } catch (Exception e) {
+            Utils.imprimeLog("detalleBovedaExcel(Nómina): ", e);
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception ignore) {}
+            try { if (stmt != null) stmt.close(); } catch (Exception ignore) {}
+        }
+        return lista;
+    }
+	
 	public void procesarXmlBoveda(Connection con, String esquema, String esquemaEmpresa, List<File> listaXML, Integer arrResultado [], String usuarioHTTP, boolean bandGuardarDescarga) {
 		Comprobante _comprobante = null;
 		ArrayList<Comprobante> listaDetalle = new ArrayList<Comprobante>();

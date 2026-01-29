@@ -1127,7 +1127,7 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 		  		}
 		  		dateOperator = "bt";
 			  //ArrayList<BovedaNominaForm> datosBoveda  = bovedaBean.detalleBoveda(con, rc.getEsquema(), Utils.noNulo(getRfc()), Utils.noNulo(getRazonSocial()), Utils.noNulo(getFolio()), Utils.noNulo(getSerie()), Utils.noNulo(getFechaInicial()), Utils.noNulo(getUuid()), Utils.noNulo(getFechaFinal()), getStart(), 20, true);
-		  		ArrayList<BovedaNominaForm> datosBoveda = bovedaBean.detalleBoveda(
+		  		ArrayList<BovedaNominaForm> datosBoveda = bovedaBean.detalleBovedaExcel(
 		  			    con,
 		  			    rc.getEsquema(),
 		  			    Utils.noNulo(getRfc()),
@@ -1165,6 +1165,18 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 		  			    Utils.noNulo(getGravadasOperator()), Utils.noNulo(getGravadasV1()), Utils.noNulo(getGravadasV2()),
 		  			    Utils.noNulo(getOtrosOperator()),   Utils.noNulo(getOtrosV1()),   Utils.noNulo(getOtrosV2())
 		  			);
+		  		
+		  	// === INICIO LOG DEBUG ===
+		  		if (datosBoveda != null && !datosBoveda.isEmpty()) {
+		  		    BovedaNominaForm f = datosBoveda.get(0);
+		  		    logger.info("DEBUG EXCEL [0] UUID: " + f.getUuid());
+		  		    logger.info("DEBUG EXCEL [0] Exentas: " + f.getImporteExcentoDouble());
+		  		    logger.info("DEBUG EXCEL [0] Gravadas: " + f.getImporteGravadoDouble());
+		  		    logger.info("DEBUG EXCEL [0] Otros: " + f.getTotalOtrosDouble());
+		  		} else {
+		  		    logger.info("DEBUG EXCEL: La lista datosBoveda está vacía.");
+		  		}
+		  		// === FIN LOG DEBUG ===
 			  ConvierteEXCEL convExcel = new ConvierteEXCEL();
 			int REG_NUEVA_PAGINA = 1000000;
 	  		if (datosBoveda.size() >= REG_NUEVA_PAGINA) {
@@ -1269,6 +1281,8 @@ public class BovedaNominaAction extends BovedaNominaSupport{
 	  			    Utils.noNulo(getGravadasOperator()), Utils.noNulo(getGravadasV1()), Utils.noNulo(getGravadasV2()),
 	  			    Utils.noNulo(getOtrosOperator()),   Utils.noNulo(getOtrosV1()),   Utils.noNulo(getOtrosV2())
 	  			);
+	  		
+	  		
 
 		  try {
 			  ConvierteEXCEL convExcel = new ConvierteEXCEL();
